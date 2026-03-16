@@ -9,7 +9,7 @@ const UserLayout = () => {
       <Banner />
       <Header />
       <main className="flex flex-col items-center">
-        <Outlet /> {/* Đây là nơi các trang con sẽ hiển thị */}
+        <Outlet /> {/* Nơi hiển thị các trang con */}
       </main>
       <Footer />
     </div>
