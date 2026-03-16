@@ -1,0 +1,93 @@
+ecommerce-frontend/
+├── public/
+│   └── favicon.ico
+│
+├── src/
+│   ├── assets/
+│   │   ├── images/
+│   │   ├── icons/
+│   │   └── styles/
+│   │       └── global.css
+│   │
+│   ├── components/
+│   │   ├── common/              # component dùng chung
+│   │   │   ├── Header.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── SearchBar.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── Pagination.jsx
+│   │   │   └── Loader.jsx
+│   │   │
+│   │   ├── user/                # component riêng cho user
+│   │   │   └── CartItem.jsx
+│   │   │
+│   │   └── admin/               # component riêng cho admin
+│   │       ├── Sidebar.jsx
+│   │       └── AdminTable.jsx
+│   │
+│   ├── layouts/
+│   │   ├── UserLayout.jsx       # Layout cho trang user
+│   │   ├── AdminLayout.jsx      # Layout cho trang admin
+│   │   └── AuthLayout.jsx       # Layout cho login/register
+│   │
+│   ├── pages/
+│   │   ├── user/
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── ProductDetailPage.jsx
+│   │   │   ├── CategoryPage.jsx
+│   │   │   ├── SearchResultPage.jsx
+│   │   │   ├── CartPage.jsx
+│   │   │   ├── CheckoutPage.jsx
+│   │   │   ├── OrderPage.jsx
+│   │   │   ├── OrderDetailPage.jsx
+│   │   │   ├── ProfilePage.jsx            # thông tin tài khoản user
+│   │   │   └── WishlistPage.jsx           # danh sách yêu thích (nếu có)
+│   │   │
+│   │   ├── admin/
+│   │   │   ├── DashboardPage.jsx
+│   │   │   ├── ManageProductsPage.jsx
+│   │   │   ├── ManageUsersPage.jsx
+│   │   │   ├── ManageCategoriesPage.jsx
+│   │   │   ├── ManageDiscountsPage.jsx
+│   │   │   └── ManageOrdersPage.jsx
+│   │   │
+│   │   └── auth/
+│   │       ├── LoginPage.jsx
+│   │       └── RegisterPage.jsx
+│   │
+│   ├── routes/
+│   │   ├── userRoutes.jsx
+│   │   ├── adminRoutes.jsx
+│   │   └── index.jsx               # combine các route vào BrowserRouter
+│   │
+│   ├── context/
+│   │   ├── AuthContext.jsx
+│   │   ├── CartContext.jsx
+│   │   └── ThemeContext.jsx        # nếu có dark/light mode
+│   │
+│   ├── hooks/
+│   │   ├── useFetch.js
+│   │   ├── useAuth.js
+│   │   └── useCart.js
+│   │
+│   ├── services/                   # chứa logic gọi API
+│   │   ├── apiClient.js
+│   │   ├── productService.js
+│   │   ├── categoryService.js
+│   │   ├── orderService.js
+│   │   ├── userService.js
+│   │   └── discountService.js
+│   │
+│   ├── utils/
+│   │   ├── formatCurrency.js
+│   │   ├── handleError.js
+│   │   └── constants.js
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+│
+├── .env
+├── package.json
+└── vite.config.js

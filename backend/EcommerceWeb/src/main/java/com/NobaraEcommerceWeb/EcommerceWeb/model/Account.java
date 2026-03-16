@@ -18,7 +18,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "account")
+@Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
@@ -33,8 +33,10 @@ public class Account {
     private String email;
 
     private String fullName;
-
+    
     private String phone;
+    
+    private String avatar;
 
     @CreationTimestamp
     private Date createdAt;
@@ -47,21 +49,21 @@ public class Account {
     @ManyToMany
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
     private List<Address> addresses;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
     private List<Cart> cart;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
     private List<Notification> AccountNotifications;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
     private List<Payment> payments;
 }

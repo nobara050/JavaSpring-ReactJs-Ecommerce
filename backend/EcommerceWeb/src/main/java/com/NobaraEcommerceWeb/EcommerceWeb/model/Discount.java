@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "discount")
+@Table(name = "discounts")
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,6 @@ public class Discount {
 
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "discounts", cascade = CascadeType.ALL)
     private List<Product> products;
 }
