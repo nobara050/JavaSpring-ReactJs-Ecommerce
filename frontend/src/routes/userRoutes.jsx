@@ -1,28 +1,27 @@
-import { createBrowserRouter } from "react-router-dom";
 import UserLayout from "../layouts/UserLayout.jsx";
-import NotFoundLayout from "../layouts/NotFoundLayout.jsx";
+import AuthLayout from "../layouts/AuthLayout.jsx";
 import HomePage from "../pages/user/HomePage.jsx";
 import CartPage from "../pages/user/CartPage.jsx";
-import NotFoundPage from "../pages/common/NotFoundPage.jsx";
 import ProductDetailPage from "../pages/user/ProductDetailPage.jsx";
+import LoginPage from "../pages/auth/LoginPage.jsx";
 
-const router = createBrowserRouter([
+const userRoutes = [
   {
     path: "/",
     element: <UserLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: "home", element: <HomePage /> },
-      { path: "homepage", element: <HomePage /> },
       { path: "cart", element: <CartPage /> },
       { path: "detail", element: <ProductDetailPage /> },
     ],
   },
   {
-    path: "*",
-    element: <NotFoundLayout />,
-    children: [{ path: "*", element: <NotFoundPage /> }],
+    path: "/",
+    element: <AuthLayout />,
+    children: [
+      { path: "login", element: <LoginPage /> },
+    ],
   },
-]);
+];
 
-export default router;
+export default userRoutes;
