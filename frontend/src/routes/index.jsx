@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import userRoutes from "./userRoutes.jsx";
+import adminRoutes from "./adminRoutes.jsx";
 import NotFoundLayout from "../layouts/NotFoundLayout.jsx";
 import NotFoundPage from "../pages/common/NotFoundPage.jsx";
 
 const router = createBrowserRouter([
   ...userRoutes,
+  ...adminRoutes,
   {
     path: "*",
     element: <NotFoundLayout />,
