@@ -10,12 +10,13 @@ ecommerce-frontend/
 │   │       └── global.css
 │   │
 │   ├── components/
-│   │   ├── common/              # component dùng chung
-│   │   │   ├── Header.jsx
+│   │   ├── common/           
+│   │   │   ├── Header.jsx 
 │   │   │   ├── Footer.jsx
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── SearchBar.jsx
-│   │   │   ├── ProductCard.jsx
+│   │   │   ├── Banner.jsx
+│   │   │   ├── Card.jsx
+│   │   │   ├── Slider.jsx
+│   │   │   ├── Carousel.jsx
 │   │   │   ├── Pagination.jsx
 │   │   │   └── Loader.jsx
 │   │   │
@@ -41,8 +42,7 @@ ecommerce-frontend/
 │   │   │   ├── CheckoutPage.jsx
 │   │   │   ├── OrderPage.jsx
 │   │   │   ├── OrderDetailPage.jsx
-│   │   │   ├── ProfilePage.jsx            # thông tin tài khoản user
-│   │   │   └── WishlistPage.jsx           # danh sách yêu thích (nếu có)
+│   │   │   └── ProfilePage.jsx            # thông tin tài khoản user
 │   │   │
 │   │   ├── admin/
 │   │   │   ├── DashboardPage.jsx

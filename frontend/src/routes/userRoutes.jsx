@@ -2,8 +2,9 @@ import UserLayout from "../layouts/UserLayout.jsx";
 import AuthLayout from "../layouts/AuthLayout.jsx";
 import HomePage from "../pages/user/HomePage.jsx";
 import CartPage from "../pages/user/CartPage.jsx";
-import ProductDetailPage from "../pages/user/ProductDetailPage.jsx";
 import LoginPage from "../pages/auth/LoginPage.jsx";
+import RegisterPage from "../pages/auth/RegisterPage.jsx";
+import ProductDetailPage from "../pages/user/ProductDetailPage.jsx";
 
 const userRoutes = [
   {
@@ -20,6 +21,7 @@ const userRoutes = [
     element: <AuthLayout />,
     children: [
       { path: "login", element: <LoginPage /> },
+      { path: "register", element: <RegisterPage /> },
     ],
   },
 ];
