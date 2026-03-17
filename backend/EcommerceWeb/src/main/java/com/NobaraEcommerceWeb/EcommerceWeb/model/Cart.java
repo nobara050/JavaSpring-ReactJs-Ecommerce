@@ -33,6 +33,6 @@ public class Cart {
     @ManyToOne
     private Account account;
 
-    @OneToMany(mappedBy = "carts", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> cartItems;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItemList;
 }

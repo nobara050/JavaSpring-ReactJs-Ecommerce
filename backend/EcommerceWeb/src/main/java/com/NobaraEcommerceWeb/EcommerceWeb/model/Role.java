@@ -24,8 +24,8 @@ public class Role {
 
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "role")
     // @ToString.Exclude
     // @EqualsAndHashCode.Exclude
-    private List<Account> accounts;
+    private List<Account> accountList;
 }

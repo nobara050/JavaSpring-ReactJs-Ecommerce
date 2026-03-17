@@ -32,8 +32,6 @@ public class Order {
 
     private String status;
 
-    private String shippingAddress;
-
     private String paymentMethod;
 
     private String trackingNumber;
@@ -47,12 +45,12 @@ public class Order {
     @ManyToOne
     private Address address;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItemList;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
-    private List<Notification> accountNotification;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<Notification> accountNotificationList;
 
-    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 }

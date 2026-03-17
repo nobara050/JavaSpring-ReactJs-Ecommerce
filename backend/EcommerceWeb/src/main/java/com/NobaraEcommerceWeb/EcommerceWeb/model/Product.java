@@ -41,20 +41,20 @@ public class Product {
     private LocalDateTime updatedAt;
     
     @ManyToMany
-    private List<Category> categories;
+    private List<Category> category;
 
     @ManyToOne
     private Discount discount;
 
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
-    private List<Review> reviews;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Review> reviewList;
 
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
-    private List<CartItem> cartItems;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CartItem> cartItemList;
 
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItemList;
 
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> productImages;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImageList;
 }

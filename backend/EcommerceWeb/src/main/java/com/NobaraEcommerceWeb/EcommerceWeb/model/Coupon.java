@@ -41,6 +41,6 @@ public class Coupon {
 
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "coupons", cascade = CascadeType.ALL)
-    private List<Order> orders;
+    @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
+    private List<Order> orderList;
 }

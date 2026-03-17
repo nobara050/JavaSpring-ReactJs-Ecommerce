@@ -1,5 +1,6 @@
 package com.NobaraEcommerceWeb.EcommerceWeb.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class Discount {
 
     private String discountName;
 
+    private BigDecimal discountAmount;
+
     private Double discountPercent;
 
     private LocalDateTime startDate;
@@ -30,6 +33,6 @@ public class Discount {
 
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "discounts", cascade = CascadeType.ALL)
-    private List<Product> products;
+    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
+    private List<Product> productList;
 }

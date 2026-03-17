@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +22,7 @@ import lombok.Data;
 @Table(name = "accounts")
 public class Account {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -47,23 +48,23 @@ public class Account {
     private Boolean isActive = true;
 
     @ManyToMany
-    private List<Role> roles;
+    private List<Role> role;
 
-    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Address> addresses;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Address> addressList;
 
-    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Cart> cart;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Cart> cartList;
 
-    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Order> orders;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Order> orderList;
 
-    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Review> reviews;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Review> reviewList;
 
-    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Notification> AccountNotifications;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Notification> accountNotificationList;
 
-    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Payment> payments;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Payment> paymentList;
 }
