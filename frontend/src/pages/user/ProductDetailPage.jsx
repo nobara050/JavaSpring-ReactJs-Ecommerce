@@ -1,9 +1,10 @@
 import { useState } from "react";
+import formatCurrency from "../../utils/formatCurrency";
 
 const product = {
   name: "Classic Leather Sneaker — White/Tan Limited Edition 2026 Special Collection",
-  price: 89,
-  originalPrice: 120,
+  price: 890000,
+  originalPrice: 1200000,
   rating: 4,
   reviewCount: 128,
   description:
@@ -74,10 +75,10 @@ const DetailPage = () => {
 
           {/* Gia */}
           <div className="text-3xl font-medium text-gray-900 mb-1">
-            ${product.price}.00
+            {formatCurrency(product.price)}
           </div>
           <div className="text-sm text-gray-400 line-through mb-4">
-            ${product.originalPrice}.00
+            {formatCurrency(product.originalPrice)}
           </div>
 
           <hr className="border-gray-200 mb-4" />
