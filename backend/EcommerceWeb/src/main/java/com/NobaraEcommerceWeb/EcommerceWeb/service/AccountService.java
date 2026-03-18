@@ -16,11 +16,7 @@ public class AccountService {
     AccountDao accountDao;
 
     public List<Account> getAllAccounts() {
-        List<Account> accounts = accountDao.findAll();
-        if (accounts.isEmpty()) {
-            throw new EntityNotFoundException("No accounts found");
-        }
-        return accounts;
+        return accountDao.findAll();
     }
 
     public Account getAccountById(Long id) {
@@ -44,7 +40,8 @@ public class AccountService {
         if (existingAccount == null) {
             throw new EntityNotFoundException("Account not found with id: " + id);
         }
-
+        existingAccount.setAvatar(account.getAvatar());
+        existingAccount.setIsActive(account.getIsActive());
         existingAccount.setUsername(account.getUsername());
         existingAccount.setPassword(account.getPassword());
         existingAccount.setEmail(account.getEmail());
@@ -55,7 +52,9 @@ public class AccountService {
     }
 
     public void deleteAccount(Long id) {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAccount'");
+        Account account = accountDao.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
+        accountDao.delete(account);
     }
 }
 

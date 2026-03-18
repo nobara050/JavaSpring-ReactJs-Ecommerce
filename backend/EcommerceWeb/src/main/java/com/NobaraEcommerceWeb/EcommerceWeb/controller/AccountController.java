@@ -33,8 +33,6 @@ public class AccountController {
         try {
             List<Account> accounts = accountService.getAllAccounts();
             return new ResponseEntity<>(accounts, HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -76,7 +74,13 @@ public class AccountController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
-        accountService.deleteAccount(id);
-        return ResponseEntity.noContent().build();
+        try {
+            accountService.deleteAccount(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
