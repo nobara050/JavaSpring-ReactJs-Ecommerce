@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.CartDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.CartItemDao;
+import com.NobaraEcommerceWeb.EcommerceWeb.dao.ProductDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.dto.CartItemRequestDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.dto.CartItemResponseDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Cart;
