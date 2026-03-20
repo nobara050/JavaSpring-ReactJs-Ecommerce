@@ -1,60 +1,64 @@
 package com.NobaraEcommerceWeb.EcommerceWeb.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.AccountDao;
+import com.NobaraEcommerceWeb.EcommerceWeb.dto.AccountRequestDto;
+import com.NobaraEcommerceWeb.EcommerceWeb.dto.AccountResponseDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Account;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class AccountService {
-    @Autowired 
+
+    @Autowired
     AccountDao accountDao;
 
-    public List<Account> getAllAccounts() {
-        return accountDao.findAll();
+    @Autowired
+    ModelMapper modelMapper;
+
+    public List<AccountResponseDto> getAllAccounts() {
+        return accountDao.findAll()
+                .stream()
+                .map(account -> modelMapper.map(account, AccountResponseDto.class))
+                .collect(Collectors.toList());
     }
 
-    public Account getAccountById(Long id) {
-        Account account = accountDao.findById(id).orElse(null);
-        if (account == null) {
-            throw new EntityNotFoundException("Account not found with id: " + id);
-        }
-        return account;
+    public AccountResponseDto getAccountById(Long id) {
+        Account account = accountDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
+        return modelMapper.map(account, AccountResponseDto.class);
     }
 
-    public Account createAccount(Account account) {
-        try {
-            return accountDao.save(account);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create account", e);
-        }
+    public AccountResponseDto createAccount(AccountRequestDto accountRequestDto) {
+        Account account = modelMapper.map(accountRequestDto, Account.class);
+        Account saved = accountDao.save(account);
+        return modelMapper.map(saved, AccountResponseDto.class);
     }
 
-    public Account updateAccount(Long id, Account account) {
-        Account existingAccount = accountDao.findById(id).orElse(null);
-        if (existingAccount == null) {
-            throw new EntityNotFoundException("Account not found with id: " + id);
-        }
-        existingAccount.setAvatar(account.getAvatar());
-        existingAccount.setIsActive(account.getIsActive());
-        existingAccount.setUsername(account.getUsername());
-        existingAccount.setPassword(account.getPassword());
-        existingAccount.setEmail(account.getEmail());
-        existingAccount.setFullName(account.getFullName());
-        existingAccount.setPhone(account.getPhone());
-
-        return accountDao.save(existingAccount);
+    public AccountResponseDto updateAccount(Long id, AccountRequestDto accountRequestDto) {
+        Account existing = accountDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
+        existing.setUsername(accountRequestDto.getUsername());
+        existing.setPassword(accountRequestDto.getPassword());
+        existing.setEmail(accountRequestDto.getEmail());
+        existing.setFullName(accountRequestDto.getFullName());
+        existing.setPhone(accountRequestDto.getPhone());
+        existing.setAvatar(accountRequestDto.getAvatar());
+        Account saved = accountDao.save(existing);
+        return modelMapper.map(saved, AccountResponseDto.class);
     }
 
     public void deleteAccount(Long id) {
-        Account account = accountDao.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
-        accountDao.delete(account);
+        Account existing = accountDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
+        accountDao.delete(existing);
     }
 }
 

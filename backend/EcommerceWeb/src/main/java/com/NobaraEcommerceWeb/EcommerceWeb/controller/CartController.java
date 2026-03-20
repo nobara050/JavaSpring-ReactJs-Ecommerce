@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.NobaraEcommerceWeb.EcommerceWeb.model.Cart;
+import com.NobaraEcommerceWeb.EcommerceWeb.dto.CartResponseDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.service.CartService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -23,10 +23,9 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/account/{accountId}")
-    public ResponseEntity<Cart> getCartByAccountId(@PathVariable Long accountId) {
+    public ResponseEntity<CartResponseDto> getCartByAccountId(@PathVariable Long accountId) {
         try {
-            Cart cart = cartService.getCartByAccountId(accountId);
-            return new ResponseEntity<>(cart, HttpStatus.OK);
+            return new ResponseEntity<>(cartService.getCartByAccountId(accountId), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -35,10 +34,9 @@ public class CartController {
     }
 
     @PostMapping("/account/{accountId}")
-    public ResponseEntity<Cart> createCart(@PathVariable Long accountId) {
+    public ResponseEntity<CartResponseDto> createCart(@PathVariable Long accountId) {
         try {
-            Cart cart = cartService.createCart(accountId);
-            return new ResponseEntity<>(cart, HttpStatus.CREATED);
+            return new ResponseEntity<>(cartService.createCart(accountId), HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {

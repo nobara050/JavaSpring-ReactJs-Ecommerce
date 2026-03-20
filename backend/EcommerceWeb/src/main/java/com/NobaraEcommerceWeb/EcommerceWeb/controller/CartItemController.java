@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.NobaraEcommerceWeb.EcommerceWeb.model.CartItem;
+import com.NobaraEcommerceWeb.EcommerceWeb.dto.CartItemRequestDto;
+import com.NobaraEcommerceWeb.EcommerceWeb.dto.CartItemResponseDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.service.CartItemService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -24,13 +26,11 @@ public class CartItemController {
     CartItemService cartItemService;
 
     @PostMapping("/{cartId}/items")
-    public ResponseEntity<CartItem> addItem(
+    public ResponseEntity<CartItemResponseDto> addItem(
             @PathVariable Long cartId,
-            @RequestParam Long productId,
-            @RequestParam Integer quantity) {
+            @RequestBody CartItemRequestDto dto) {
         try {
-            CartItem cartItem = cartItemService.addItem(cartId, productId, quantity);
-            return new ResponseEntity<>(cartItem, HttpStatus.CREATED);
+            return new ResponseEntity<>(cartItemService.addItem(cartId, dto), HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -39,13 +39,12 @@ public class CartItemController {
     }
 
     @PutMapping("/{cartId}/items/{cartItemId}")
-    public ResponseEntity<CartItem> updateQuantity(
+    public ResponseEntity<CartItemResponseDto> updateQuantity(
             @PathVariable Long cartId,
             @PathVariable Long cartItemId,
             @RequestParam Integer quantity) {
         try {
-            CartItem cartItem = cartItemService.updateQuantity(cartItemId, quantity);
-            return new ResponseEntity<>(cartItem, HttpStatus.OK);
+            return new ResponseEntity<>(cartItemService.updateQuantity(cartItemId, quantity), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {

@@ -1,6 +1,5 @@
 package com.NobaraEcommerceWeb.EcommerceWeb.controller;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,38 +10,36 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.NobaraEcommerceWeb.EcommerceWeb.dto.AccountRequestDto;
-import com.NobaraEcommerceWeb.EcommerceWeb.dto.AccountResponseDto;
-import com.NobaraEcommerceWeb.EcommerceWeb.service.AccountService;
+import com.NobaraEcommerceWeb.EcommerceWeb.dto.CategoryRequestDto;
+import com.NobaraEcommerceWeb.EcommerceWeb.dto.CategoryResponseDto;
+import com.NobaraEcommerceWeb.EcommerceWeb.service.CategoryService;
 
 import jakarta.persistence.EntityNotFoundException;
 
-
-
 @RestController
-@RequestMapping("/account")
-public class AccountController {
+@RequestMapping("/category")
+public class CategoryController {
 
     @Autowired
-    AccountService accountService;
+    CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<AccountResponseDto>> getAllAccounts() {
+    public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
         try {
-            return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.OK);
+            return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponseDto> getAccountById(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable Long id) {
         try {
-            return new ResponseEntity<>(accountService.getAccountById(id), HttpStatus.OK);
+            return new ResponseEntity<>(categoryService.getCategoryById(id), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -51,18 +48,18 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountResponseDto> createAccount(@RequestBody AccountRequestDto accountRequestDto) {
+    public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody CategoryRequestDto categoryRequestDto) {
         try {
-            return new ResponseEntity<>(accountService.createAccount(accountRequestDto), HttpStatus.CREATED);
+            return new ResponseEntity<>(categoryService.createCategory(categoryRequestDto), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AccountResponseDto> updateAccount(@PathVariable Long id, @RequestBody AccountRequestDto accountRequestDto) {
+    public ResponseEntity<CategoryResponseDto> updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDto categoryRequestDto) {
         try {
-            return new ResponseEntity<>(accountService.updateAccount(id, accountRequestDto), HttpStatus.OK);
+            return new ResponseEntity<>(categoryService.updateCategory(id, categoryRequestDto), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -71,9 +68,9 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         try {
-            accountService.deleteAccount(id);
+            categoryService.deleteCategory(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
