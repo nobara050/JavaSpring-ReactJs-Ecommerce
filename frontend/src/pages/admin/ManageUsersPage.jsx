@@ -1,30 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import userService from "../../services/userService";
 
 const roleColor = {
-  admin: "bg-purple-100 text-purple-700",
-  user: "bg-gray-100 text-gray-600",
+  ADMIN: "bg-purple-100 text-purple-700",
+  USER: "bg-gray-100 text-gray-600",
 };
 
-const initialUsers = [
-  { id: 1, fullName: "Nguyễn Văn A", email: "a@email.com", phone: "0901234567", role: "user" },
-  { id: 2, fullName: "Trần Thị B", email: "b@email.com", phone: "0912345678", role: "admin" },
-  { id: 3, fullName: "Lê Văn C", email: "c@email.com", phone: "0923456789", role: "user" },
-];
-
 const ManageUsersPage = () => {
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const data = await userService.getAll();
+      setUsers(data);
+    } catch (error) {
+      console.error("Loi tai nguoi dung:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filtered = users.filter(
     (u) =>
-      u.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      u.email.toLowerCase().includes(search.toLowerCase())
+      u.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      u.email?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleDelete = (id) => {
-    setUsers((prev) => prev.filter((u) => u.id !== id));
-    setDeleteTarget(null);
+  const handleDelete = async (id) => {
+    try {
+      await userService.delete(id);
+      await fetchUsers();
+      setDeleteTarget(null);
+    } catch (error) {
+      console.error("Loi xoa nguoi dung:", error);
+    }
   };
 
   return (
@@ -54,7 +71,11 @@ const ManageUsersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="text-center py-10 text-gray-400">Đang tải...</td>
+              </tr>
+            ) : filtered.length === 0 ? (
               <tr>
                 <td colSpan={6} className="text-center py-10 text-gray-400">Không tìm thấy người dùng nào</td>
               </tr>
@@ -66,17 +87,14 @@ const ManageUsersPage = () => {
                   <td className="px-6 py-4 text-gray-500">{user.email}</td>
                   <td className="px-6 py-4 text-gray-500">{user.phone}</td>
                   <td className="px-6 py-4">
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${roleColor[user.role]}`}>
-                      {user.role}
-                    </span>
+                    {user.role?.map((r) => (
+                      <span key={r.roleName} className={`text-xs font-medium px-2.5 py-1 rounded-full mr-1 ${roleColor[r.roleName] || "bg-gray-100 text-gray-600"}`}>
+                        {r.roleName}
+                      </span>
+                    ))}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => setDeleteTarget(user)}
-                      className="text-sm text-red-400 hover:text-red-600 transition-colors"
-                    >
-                      Xóa
-                    </button>
+                    <button onClick={() => setDeleteTarget(user)} className="text-sm text-red-400 hover:text-red-600 transition-colors">Xóa</button>
                   </td>
                 </tr>
               ))
