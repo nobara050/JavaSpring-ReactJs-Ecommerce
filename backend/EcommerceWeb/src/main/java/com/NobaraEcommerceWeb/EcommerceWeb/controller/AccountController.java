@@ -50,15 +50,6 @@ public class AccountController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<AccountResponseDto> createAccount(@RequestBody AccountRequestDto accountRequestDto) {
-        try {
-            return new ResponseEntity<>(accountService.createAccount(accountRequestDto), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<AccountResponseDto> updateAccount(@PathVariable Long id, @RequestBody AccountRequestDto accountRequestDto) {
         try {

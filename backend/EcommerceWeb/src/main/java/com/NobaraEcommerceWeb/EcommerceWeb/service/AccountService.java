@@ -36,12 +36,6 @@ public class AccountService {
         return modelMapper.map(account, AccountResponseDto.class);
     }
 
-    public AccountResponseDto createAccount(AccountRequestDto accountRequestDto) {
-        Account account = modelMapper.map(accountRequestDto, Account.class);
-        Account saved = accountDao.save(account);
-        return modelMapper.map(saved, AccountResponseDto.class);
-    }
-
     public AccountResponseDto updateAccount(Long id, AccountRequestDto accountRequestDto) {
         Account existing = accountDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));

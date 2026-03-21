@@ -455,9 +455,7 @@ const ManageProductsPage = () => {
                           alt=""
                           className="w-10 h-10 object-cover rounded-lg"
                         />
-                        <span className="flex-1 text-xs text-gray-500 truncate">
-                          {img.type === "existing" ? img.imageUrl : img.file.name}
-                        </span>
+                        
                         {img.isPrimary ? (
                           <span className="text-xs text-green-600 font-medium">Chính</span>
                         ) : (

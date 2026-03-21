@@ -4,8 +4,13 @@ import ManageOrdersPage from "../pages/admin/ManageOrdersPage.jsx";
 import ManageProductsPage from "../pages/admin/ManageProductsPage.jsx";
 import ManageUsersPage from "../pages/admin/ManageUsersPage.jsx";
 import ManageCategoriesPage from "../pages/admin/ManageCategoriesPage.jsx";
+import AdminLoginPage from "../pages/admin/AdminLoginPage.jsx";
 
 const adminRoutes = [
+  {
+    path: "/admin/login",
+    element: <AdminLoginPage />,
+  },
   {
     path: "/admin",
     element: <AdminLayout />,
