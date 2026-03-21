@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.NobaraEcommerceWeb.EcommerceWeb.dto.ProductImageRequestDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.dto.ProductImageResponseDto;
@@ -36,6 +38,22 @@ public class ProductImageController {
         }
     }
 
+    // Upload file tu may
+    @PostMapping("/{productId}/images/upload")
+    public ResponseEntity<ProductImageResponseDto> uploadImage(
+            @PathVariable Long productId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "isPrimary", defaultValue = "false") Boolean isPrimary) {
+        try {
+            return new ResponseEntity<>(productImageService.uploadImage(productId, file, isPrimary), HttpStatus.CREATED);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Them bang URL
     @PostMapping("/{productId}/images")
     public ResponseEntity<ProductImageResponseDto> addImage(
             @PathVariable Long productId,

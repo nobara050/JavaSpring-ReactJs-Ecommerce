@@ -54,6 +54,11 @@ public class CategoryService {
     public void deleteCategory(Long id) {
         Category existing = categoryDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+
+        if (existing.getProductList() != null && !existing.getProductList().isEmpty()) {
+            throw new IllegalStateException("Không thể xóa danh mục đang có sản phẩm");
+        }
+
         categoryDao.delete(existing);
     }
 }

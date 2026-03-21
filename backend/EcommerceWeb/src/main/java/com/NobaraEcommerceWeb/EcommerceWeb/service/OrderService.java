@@ -46,7 +46,14 @@ public class OrderService {
 
     @Autowired
     ModelMapper modelMapper;
-
+    
+    public List<OrderResponseDto> getAllOrders() {
+        return orderDao.findAll()
+                .stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
+    }
+    
     public List<OrderResponseDto> getOrdersByAccountId(Long accountId) {
         return orderDao.findByAccountId(accountId)
                 .stream()

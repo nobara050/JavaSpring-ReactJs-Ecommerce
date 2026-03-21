@@ -27,6 +27,15 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    @GetMapping
+    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
+        try {
+            return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/account/{accountId}")
     public ResponseEntity<List<OrderResponseDto>> getOrdersByAccountId(@PathVariable Long accountId) {
         try {

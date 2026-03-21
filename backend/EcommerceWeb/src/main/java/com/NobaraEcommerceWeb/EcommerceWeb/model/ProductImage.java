@@ -22,7 +22,7 @@ public class ProductImage {
 
     private String imageUrl;
 
-    private boolean isPrimary;
+    private Boolean isPrimary;
 
     @CreationTimestamp
     private LocalDate createdAt;
