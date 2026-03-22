@@ -1,6 +1,6 @@
 package com.NobaraEcommerceWeb.EcommerceWeb.config;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.LinkedHashSet;
 
@@ -14,6 +14,8 @@ import com.NobaraEcommerceWeb.EcommerceWeb.dao.RoleDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Account;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Role;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Component
 public class AuthDataInitializer implements CommandLineRunner {
 
@@ -24,16 +26,16 @@ public class AuthDataInitializer implements CommandLineRunner {
     @Value("${app.admin.username:admin}")
     private String adminUsername;
 
-    @Value("${app.admin.password:admin123}")
+    @Value("${app.admin.password:admin}")
     private String adminPassword;
 
-    @Value("${app.admin.email:admin@ecommerce.local}")
+    @Value("${app.admin.email:nguyentiendat050@gmail.com}")
     private String adminEmail;
 
     @Value("${app.admin.full-name:System Admin}")
     private String adminFullName;
 
-    @Value("${app.admin.phone:0000000000}")
+    @Value("${app.admin.phone:0374242682}")
     private String adminPhone;
 
     public AuthDataInitializer(RoleDao roleDao, AccountDao accountDao, PasswordEncoder passwordEncoder) {
@@ -42,7 +44,12 @@ public class AuthDataInitializer implements CommandLineRunner {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Transaction must be on a public method so Spring AOP applies; otherwise
+     * accessing lazy {@code Account.role} triggers LazyInitializationException.
+     */
     @Override
+    @Transactional
     public void run(String... args) {
         Role userRole = ensureRole("USER", "Default user role");
         Role adminRole = ensureRole("ADMIN", "Administrator role");
@@ -80,7 +87,9 @@ public class AuthDataInitializer implements CommandLineRunner {
         }
         roleSet.add(adminRole);
         roleSet.add(userRole);
-        admin.setRole(List.copyOf(roleSet));
+        // Must be mutable: Hibernate merge may call clear() on the collection;
+        // List.copyOf() is immutable and throws UnsupportedOperationException.
+        admin.setRole(new ArrayList<>(roleSet));
 
         accountDao.save(admin);
     }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../services/apiClient";
+import authService from "../../services/authService";
 
 const AdminLoginPage = () => {
   const navigate = useNavigate();
@@ -23,12 +24,13 @@ const AdminLoginPage = () => {
         body: JSON.stringify(form),
       });
 
+      authService.clearUserSession();
       localStorage.setItem("adminAccessToken", response.accessToken);
       localStorage.setItem("adminRefreshToken", response.refreshToken);
       localStorage.setItem("adminUsername", response.username);
 
       navigate("/admin");
-    } catch (err) {
+    } catch {
       setError("Sai tài khoản/mật khẩu hoặc bạn không có quyền admin.");
     } finally {
       setIsLoading(false);

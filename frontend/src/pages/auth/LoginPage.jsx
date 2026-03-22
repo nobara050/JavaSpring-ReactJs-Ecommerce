@@ -1,33 +1,53 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import authService from "../../services/authService";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password, remember });
+    setError("");
+    setIsLoading(true);
+    try {
+      const data = await authService.login(username.trim(), password);
+      authService.persistUserSession(data);
+      if (!remember) {
+        // vẫn lưu token; "nhớ đăng nhập" có thể mở rộng sau (cookie / refresh dài hạn)
+      }
+      navigate("/");
+    } catch (err) {
+      if (err.status === 401) {
+        setError("Sai tên đăng nhập hoặc mật khẩu.");
+      } else {
+        setError("Đăng nhập thất bại. Thử lại sau.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-8 w-full max-w-md">
-
       <div className="text-center mb-8">
         <h1 className="text-2xl font-medium text-gray-900">Đăng nhập</h1>
         <p className="text-sm text-gray-400 mt-1">Chào mừng bạn quay trở lại</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Email</label>
+          <label className="text-sm font-medium text-gray-700">Tên đăng nhập</label>
           <input
-            type="email"
-            placeholder="example@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            autoComplete="username"
+            placeholder="Email hoặc username đã đăng ký"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
           />
@@ -45,6 +65,7 @@ const LoginPage = () => {
           </div>
           <input
             type="password"
+            autoComplete="current-password"
             placeholder="Nhập mật khẩu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -66,13 +87,15 @@ const LoginPage = () => {
           </label>
         </div>
 
+        {error && <p className="text-xs text-red-500">{error}</p>}
+
         <button
           type="submit"
-          className="w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity"
+          disabled={isLoading}
+          className="w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-60"
         >
-          Đăng nhập
+          {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
         </button>
-
       </form>
 
       <p className="text-center text-sm text-gray-400 mt-6">
@@ -81,7 +104,6 @@ const LoginPage = () => {
           Đăng ký ngay
         </Link>
       </p>
-
     </div>
   );
 };

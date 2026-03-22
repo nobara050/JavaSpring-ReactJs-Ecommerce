@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import authService from "../../services/authService";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -10,32 +12,51 @@ const RegisterPage = () => {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
       setError("Mật khẩu xác nhận không khớp");
       return;
     }
     setError("");
-    // TODO: goi API dang ky
-    console.log(form);
+    setIsLoading(true);
+
+    try {
+      // Backend yêu cầu username — dùng email làm username (phổ biến)
+      const data = await authService.register({
+        username: form.email.trim(),
+        password: form.password,
+        email: form.email.trim(),
+        fullName: form.fullName.trim(),
+        phone: form.phone.trim(),
+      });
+      authService.persistUserSession(data);
+      navigate("/");
+    } catch (err) {
+      if (err.status === 409) {
+        setError("Email hoặc tên đăng nhập đã được sử dụng.");
+      } else {
+        setError("Đăng ký thất bại. Kiểm tra dữ liệu và thử lại.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-8 w-full max-w-md">
-
       <div className="text-center mb-8">
         <h1 className="text-2xl font-medium text-gray-900">Đăng ký</h1>
         <p className="text-sm text-gray-400 mt-1">Tạo tài khoản mới</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-gray-700">Họ tên</label>
           <input
@@ -50,7 +71,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Email</label>
+          <label className="text-sm font-medium text-gray-700">Email (dùng làm tên đăng nhập)</label>
           <input
             type="email"
             name="email"
@@ -101,17 +122,15 @@ const RegisterPage = () => {
           />
         </div>
 
-        {error && (
-          <p className="text-xs text-red-500">{error}</p>
-        )}
+        {error && <p className="text-xs text-red-500">{error}</p>}
 
         <button
           type="submit"
-          className="w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity"
+          disabled={isLoading}
+          className="w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-60"
         >
-          Đăng ký
+          {isLoading ? "Đang xử lý..." : "Đăng ký"}
         </button>
-
       </form>
 
       <p className="text-center text-sm text-gray-400 mt-6">
@@ -120,7 +139,6 @@ const RegisterPage = () => {
           Đăng nhập
         </Link>
       </p>
-
     </div>
   );
 };

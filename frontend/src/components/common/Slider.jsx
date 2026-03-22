@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Slider() {
   const images = [
@@ -10,7 +10,10 @@ export default function Slider() {
   const [current, setCurrent] = useState(0);
   const total = images.length;
 
-  const next = () => setCurrent((prev) => (prev + 1) % total);
+  const next = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % total);
+  }, [total]);
+
   const prev = () => setCurrent((prev) => (prev - 1 + total) % total);
 
   // =============================================================
@@ -62,7 +65,7 @@ export default function Slider() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isPaused, current]);
+  }, [isPaused, current, next]);
 
   // =============================================================
   // Div trả về

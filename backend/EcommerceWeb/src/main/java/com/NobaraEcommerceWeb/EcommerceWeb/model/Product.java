@@ -34,6 +34,8 @@ public class Product {
 
     private Integer stockQuantity;
 
+    private Boolean isActive = true;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

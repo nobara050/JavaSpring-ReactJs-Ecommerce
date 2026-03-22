@@ -1,15 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Card from "./Card.jsx";
 
-export default function Carousel({ title = "", images = [] }) {
+/**
+ * @param {object} props
+ * @param {string} props.title
+ * @param {string[]} [props.images] — URL ảnh tĩnh (legacy)
+ * @param {object[]} [props.products] — từ API GET /product (ưu tiên hơn images)
+ */
+export default function Carousel({ title = "", images = [], products = null }) {
   const [current, setCurrent] = useState(0);
-  const total = images.length;
+  const total = products?.length ? products.length : images.length;
   const visibleCount = 5;
-  const maxIndex = total - visibleCount;
+  const maxIndex = Math.max(0, total - visibleCount);
 
-  const next = () => {
+  const next = useCallback(() => {
     setCurrent((prev) => (prev < maxIndex ? prev + 1 : 0));
-  };
+  }, [maxIndex]);
 
   const prev = () => {
     setCurrent((prev) => (prev > 0 ? prev - 1 : maxIndex));
@@ -27,7 +33,11 @@ export default function Carousel({ title = "", images = [] }) {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isPaused, current]);
+  }, [isPaused, current, next]);
+
+  useEffect(() => {
+    setCurrent(0);
+  }, [total]);
 
   // =============================================================
   // Div trả về
@@ -45,11 +55,17 @@ export default function Carousel({ title = "", images = [] }) {
           transition: "transform 0.7s ease",
         }}
       >
-        {images.map((src, i) => (
-          <div className="w-1/5 flex-shrink-0 p-3" key={i}>
-            <Card imageSrc={src} />
-          </div>
-        ))}
+        {products?.length
+          ? products.map((p) => (
+              <div className="w-1/5 flex-shrink-0 p-3" key={p.id}>
+                <Card product={p} />
+              </div>
+            ))
+          : images.map((src, i) => (
+              <div className="w-1/5 flex-shrink-0 p-3" key={i}>
+                <Card imageSrc={src} />
+              </div>
+            ))}
       </div>
       <button
         onClick={prev}

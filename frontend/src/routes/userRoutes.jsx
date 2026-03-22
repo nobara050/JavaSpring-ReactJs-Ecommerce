@@ -5,6 +5,7 @@ import CartPage from "../pages/user/CartPage.jsx";
 import LoginPage from "../pages/auth/LoginPage.jsx";
 import RegisterPage from "../pages/auth/RegisterPage.jsx";
 import ProductDetailPage from "../pages/user/ProductDetailPage.jsx";
+import ProfilePage from "../pages/user/ProfilePage.jsx";
 
 const userRoutes = [
   {
@@ -13,7 +14,8 @@ const userRoutes = [
     children: [
       { index: true, element: <HomePage /> },
       { path: "cart", element: <CartPage /> },
-      { path: "detail", element: <ProductDetailPage /> },
+      { path: "product/:id", element: <ProductDetailPage /> },
+      { path: "profile", element: <ProfilePage /> },
     ],
   },
   {

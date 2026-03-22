@@ -38,6 +38,9 @@ public class ProductImageService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
+    @Value("${app.base-url}")
+    private String baseUrl;
+
     public List<ProductImageResponseDto> getImagesByProductId(Long productId) {
         return productImageDao.findByProductId(productId)
                 .stream()
@@ -51,6 +54,10 @@ public class ProductImageService {
 
         try {
             Path uploadPath = Paths.get(uploadDir);
+
+            // Debug log to check the upload path
+            System.out.println(">>> Upload path absolute: " + uploadPath.toAbsolutePath());
+            
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
@@ -59,7 +66,7 @@ public class ProductImageService {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath);
 
-            String imageUrl = "http://localhost:8080/" + fileName;
+            String imageUrl = baseUrl + "/uploads/" + fileName;
 
             ProductImage image = new ProductImage();
             image.setProduct(product);

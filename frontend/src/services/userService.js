@@ -1,24 +1,29 @@
 import apiClient from "./apiClient";
 
-const userService = {
-  getAll: () => apiClient("/account"),
+const admin = { useAdminToken: true };
 
-  getById: (id) => apiClient(`/account/${id}`),
+const userService = {
+  getAll: () => apiClient("/account", admin),
+
+  getById: (id) => apiClient(`/account/${id}`, admin),
 
   create: (data) =>
     apiClient("/account", {
+      ...admin,
       method: "POST",
       body: JSON.stringify(data),
     }),
 
   update: (id, data) =>
     apiClient(`/account/${id}`, {
+      ...admin,
       method: "PUT",
       body: JSON.stringify(data),
     }),
 
   delete: (id) =>
     apiClient(`/account/${id}`, {
+      ...admin,
       method: "DELETE",
     }),
 };

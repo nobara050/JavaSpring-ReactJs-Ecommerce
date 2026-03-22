@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.CategoryDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.DiscountDao;
@@ -33,6 +34,7 @@ public class ProductService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Transactional(readOnly = true)
     public List<ProductResponseDto> getAllProducts() {
         return productDao.findAll()
                 .stream()
@@ -40,14 +42,21 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ProductResponseDto getProductById(Long id) {
         Product product = productDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
         return modelMapper.map(product, ProductResponseDto.class);
     }
 
+    @Transactional
     public ProductResponseDto createProduct(ProductRequestDto dto) {
-        Product product = modelMapper.map(dto, Product.class);
+        Product product = new Product();
+        product.setProductName(dto.getProductName());
+        product.setDescription(dto.getDescription());
+        product.setPrice(dto.getPrice());
+        product.setStockQuantity(dto.getStockQuantity());
+        product.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : Boolean.TRUE);
 
         if (dto.getDiscountId() != null) {
             Discount discount = discountDao.findById(dto.getDiscountId())
@@ -63,9 +72,11 @@ public class ProductService {
             product.setCategory(categories);
         }
 
-        return modelMapper.map(productDao.save(product), ProductResponseDto.class);
+        Product saved = productDao.save(product);
+        return modelMapper.map(saved, ProductResponseDto.class);
     }
 
+    @Transactional
     public ProductResponseDto updateProduct(Long id, ProductRequestDto dto) {
         Product existing = productDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
@@ -74,6 +85,9 @@ public class ProductService {
         existing.setDescription(dto.getDescription());
         existing.setPrice(dto.getPrice());
         existing.setStockQuantity(dto.getStockQuantity());
+        if (dto.getIsActive() != null) {
+            existing.setIsActive(dto.getIsActive());
+        }
 
         if (dto.getDiscountId() != null) {
             Discount discount = discountDao.findById(dto.getDiscountId())

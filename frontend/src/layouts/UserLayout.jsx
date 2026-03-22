@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 
 const UserLayout = () => {
   return (
-    <div class="min-w-6xl max-w-full bg-[#ececec]">
+    <div className="min-w-6xl max-w-full bg-[#ececec]">
       <Banner />
       <Header />
       <main className="flex flex-col items-center">
