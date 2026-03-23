@@ -36,17 +36,24 @@ public class CartItemService {
         Product product = productDao.findById(dto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + dto.getProductId()));
 
-        CartItem cartItem = new CartItem();
-        cartItem.setCart(cart);
-        cartItem.setProduct(product);
-        cartItem.setQuantity(dto.getQuantity());
-        cartItem.setPriceAtAdd(product.getPrice());
+        // Kiem tra xem san pham da co trong gio hang chua
+        CartItem cartItem = cartItemDao.findByCartIdAndProductId(cartId, dto.getProductId())
+                .orElse(null);
+
+        if (cartItem != null) {
+            // San pham da ton tai - cong them so luong
+            cartItem.setQuantity(cartItem.getQuantity() + dto.getQuantity());
+        } else {
+            // San pham chua co - tao moi
+            cartItem = new CartItem();
+            cartItem.setCart(cart);
+            cartItem.setProduct(product);
+            cartItem.setQuantity(dto.getQuantity());
+            cartItem.setPriceAtAdd(product.getPrice());
+        }
 
         CartItem saved = cartItemDao.save(cartItem);
-        CartItemResponseDto response = modelMapper.map(saved, CartItemResponseDto.class);
-        response.setProductId(product.getId());
-        response.setProductName(product.getProductName());
-        return response;
+        return buildResponse(saved, product);
     }
 
     public CartItemResponseDto updateQuantity(Long cartItemId, Integer quantity) {
@@ -54,15 +61,28 @@ public class CartItemService {
                 .orElseThrow(() -> new EntityNotFoundException("CartItem not found with id: " + cartItemId));
         cartItem.setQuantity(quantity);
         CartItem saved = cartItemDao.save(cartItem);
-        CartItemResponseDto response = modelMapper.map(saved, CartItemResponseDto.class);
-        response.setProductId(saved.getProduct().getId());
-        response.setProductName(saved.getProduct().getProductName());
-        return response;
+        return buildResponse(saved, saved.getProduct());
     }
 
     public void removeItem(Long cartItemId) {
         CartItem cartItem = cartItemDao.findById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException("CartItem not found with id: " + cartItemId));
         cartItemDao.delete(cartItem);
+    }
+
+    private CartItemResponseDto buildResponse(CartItem cartItem, Product product) {
+        CartItemResponseDto response = modelMapper.map(cartItem, CartItemResponseDto.class);
+        response.setProductId(product.getId());
+        response.setProductName(product.getProductName());
+
+        // Lay anh primary cua san pham
+        if (product.getProductImageList() != null) {
+            product.getProductImageList().stream()
+                    .filter(img -> Boolean.TRUE.equals(img.getIsPrimary()))
+                    .findFirst()
+                    .ifPresent(img -> response.setPrimaryImageUrl(img.getImageUrl()));
+        }
+
+        return response;
     }
 }

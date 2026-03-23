@@ -2,6 +2,7 @@ package com.NobaraEcommerceWeb.EcommerceWeb.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -41,9 +44,14 @@ public class Product {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    
+
     @ManyToMany
-    private List<Category> category;
+    @JoinTable(
+        name = "products_category_list",
+        joinColumns = @JoinColumn(name = "product_list_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_list_id")
+    )
+    private List<Category> categoryList = new ArrayList<>();
 
     @ManyToOne
     private Discount discount;

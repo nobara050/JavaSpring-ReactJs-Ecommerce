@@ -8,6 +8,7 @@ import lombok.Data;
 public class ReviewResponseDto {
     private Long id;
     private Long accountId;
+    private String accountName;
     private Long productId;
     private String productName;
     private String comment;

@@ -31,8 +31,6 @@ public class SecurityConfig {
     @Value("${app.allowed-origins}")
     private String allowedOrigins;
 
-    // Bypass Spring Security hoàn toàn cho static resource (file ảnh trên disk)
-    // JwtAuthFilter sẽ không chạy với các request này
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring().requestMatchers("/uploads/**");
@@ -53,18 +51,40 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                // Product
                 .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/discount/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/product/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("ADMIN")
+
+                // Category
+                .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/category/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/category/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/category/**").hasRole("ADMIN")
-                .requestMatchers("/account/**").hasRole("ADMIN")
-                .requestMatchers("/role/**").hasRole("ADMIN")
+
+                // Discount
+                .requestMatchers(HttpMethod.GET, "/discount/**").permitAll()
                 .requestMatchers("/discount/**").hasRole("ADMIN")
+
+                // Review - GET public, POST/PUT/DELETE cần đăng nhập
+                .requestMatchers(HttpMethod.GET, "/review/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/review/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/review/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/review/**").authenticated()
+
+                // Account - /me cho user đã đăng nhập, còn lại ADMIN
+                // Đặt trước /account/** để không bị override
+                .requestMatchers(HttpMethod.GET, "/account/me").authenticated()
+                .requestMatchers("/account/**").hasRole("ADMIN")
+
+                // Role
+                .requestMatchers("/role/**").hasRole("ADMIN")
+
+                // Cart - cần đăng nhập
+                .requestMatchers("/cart/**").authenticated()
+
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

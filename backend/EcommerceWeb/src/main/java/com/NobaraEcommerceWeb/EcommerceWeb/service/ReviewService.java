@@ -86,6 +86,7 @@ public class ReviewService {
     private ReviewResponseDto mapToResponseDto(Review review) {
         ReviewResponseDto dto = modelMapper.map(review, ReviewResponseDto.class);
         dto.setAccountId(review.getAccount().getId());
+        dto.setAccountName(review.getAccount().getFullName());
         dto.setProductId(review.getProduct().getId());
         dto.setProductName(review.getProduct().getProductName());
         return dto;

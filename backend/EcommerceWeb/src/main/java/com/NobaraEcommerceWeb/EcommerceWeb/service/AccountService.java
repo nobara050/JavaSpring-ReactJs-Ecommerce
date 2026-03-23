@@ -36,6 +36,12 @@ public class AccountService {
         return modelMapper.map(account, AccountResponseDto.class);
     }
 
+    public AccountResponseDto getAccountByUsername(String username) {
+        Account account = accountDao.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with username: " + username));
+        return modelMapper.map(account, AccountResponseDto.class);
+    }
+
     public AccountResponseDto updateAccount(Long id, AccountRequestDto accountRequestDto) {
         Account existing = accountDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
@@ -55,4 +61,3 @@ public class AccountService {
         accountDao.delete(existing);
     }
 }
-

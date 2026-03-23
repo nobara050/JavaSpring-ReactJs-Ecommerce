@@ -4,8 +4,16 @@ const CartItem = ({ item, onUpdateQty, onRemove }) => {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4 flex gap-4 items-center">
       {/* Hinh san pham */}
-      <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
-        <span className="text-gray-300 text-xs">[ img ]</span>
+      <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden">
+        {item.imageUrl ? (
+          <img
+            src={item.imageUrl}
+            alt={item.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <span className="text-gray-300 text-xs">No image</span>
+        )}
       </div>
 
       {/* Thong tin */}
@@ -16,9 +24,6 @@ const CartItem = ({ item, onUpdateQty, onRemove }) => {
         <div className="flex items-center gap-2 mb-3">
           <span className="text-base font-medium text-gray-900">
             {formatCurrency(item.price)}
-          </span>
-          <span className="text-xs text-gray-400 line-through">
-            {formatCurrency(item.originalPrice)}
           </span>
         </div>
 

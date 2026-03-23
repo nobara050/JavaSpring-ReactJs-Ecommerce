@@ -4,6 +4,8 @@ import productService from "../../services/productService";
 import categoryService from "../../services/categoryService";
 import discountService from "../../services/discountService";
 
+const MAX_IMAGES = 6;
+
 const emptyForm = {
   productName: "",
   description: "",
@@ -120,21 +122,36 @@ const ManageProductsPage = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map((file) => ({
+
+    const remaining = MAX_IMAGES - allImages.length;
+    if (remaining <= 0) {
+      setError(`Tối đa ${MAX_IMAGES} ảnh cho mỗi sản phẩm.`);
+      e.target.value = "";
+      return;
+    }
+
+    const accepted = files.slice(0, remaining);
+    if (files.length > remaining) {
+      setError(`Chỉ thêm được ${remaining} ảnh nữa. Đã bỏ qua ${files.length - remaining} ảnh vượt quá giới hạn.`);
+    }
+
+    const newImages = accepted.map((file) => ({
       type: "new",
       file,
       previewUrl: URL.createObjectURL(file),
       isPrimary: false,
     }));
+
     setAllImages((prev) => {
       const updated = [...prev, ...newImages];
-      // Neu chua co anh chinh nao thi dat anh dau tien lam chinh
       const hasPrimary = updated.some((img) => img.isPrimary);
       if (!hasPrimary && updated.length > 0) {
         updated[0] = { ...updated[0], isPrimary: true };
       }
       return updated;
     });
+
+    e.target.value = "";
   };
 
   const setPrimary = (index) => {
@@ -155,7 +172,6 @@ const ManageProductsPage = () => {
     }
     setAllImages((prev) => {
       const updated = prev.filter((_, i) => i !== index);
-      // Neu xoa anh chinh thi dat anh dau tien lam chinh
       const hasPrimary = updated.some((img) => img.isPrimary);
       if (!hasPrimary && updated.length > 0) {
         updated[0] = { ...updated[0], isPrimary: true };
@@ -184,13 +200,11 @@ const ManageProductsPage = () => {
         savedProduct = await productService.create(payload);
       }
 
-      // Chi upload anh moi
       const newImages = allImages.filter((img) => img.type === "new");
       for (const img of newImages) {
         await productService.uploadImage(savedProduct.id, img.file, img.isPrimary);
       }
 
-      // Cap nhat isPrimary cho anh cu neu co thay doi
       if (editTarget) {
         const existingImages = allImages.filter((img) => img.type === "existing");
         for (const img of existingImages) {
@@ -435,7 +449,10 @@ const ManageProductsPage = () => {
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-700">
-                  Ảnh sản phẩm <span className="text-gray-400 font-normal">(tùy chọn)</span>
+                  Ảnh sản phẩm{" "}
+                  <span className="text-gray-400 font-normal">
+                    (tùy chọn, tối đa {MAX_IMAGES} ảnh — hiện có {allImages.length}/{MAX_IMAGES})
+                  </span>
                 </label>
 
                 <input
@@ -443,7 +460,8 @@ const ManageProductsPage = () => {
                   accept="image/*"
                   multiple
                   onChange={handleImageChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                  disabled={allImages.length >= MAX_IMAGES}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 />
 
                 {allImages.length > 0 && (
@@ -455,7 +473,7 @@ const ManageProductsPage = () => {
                           alt=""
                           className="w-10 h-10 object-cover rounded-lg"
                         />
-                        
+
                         {img.isPrimary ? (
                           <span className="text-xs text-green-600 font-medium">Chính</span>
                         ) : (

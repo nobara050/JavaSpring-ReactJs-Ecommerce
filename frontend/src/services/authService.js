@@ -30,6 +30,17 @@ async function postJson(path, body) {
   return data;
 }
 
+async function fetchMe(accessToken) {
+  const res = await fetch(`${BASE_URL}/account/me`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  if (!res.ok) return null;
+  return res.json();
+}
+
 function clearAdminSession() {
   localStorage.removeItem("adminAccessToken");
   localStorage.removeItem("adminRefreshToken");
@@ -41,6 +52,7 @@ function clearUserSession() {
   localStorage.removeItem("userRefreshToken");
   localStorage.removeItem("userUsername");
   localStorage.removeItem("userEmail");
+  localStorage.removeItem("userAccountId");
 }
 
 const authService = {
@@ -67,14 +79,23 @@ const authService = {
 
   clearAdminSession,
 
-  /** Lưu session user — xóa admin trước để tránh trùng hai JWT. */
-  persistUserSession: (auth) => {
+  /**
+   * Lưu session user — xóa admin trước để tránh trùng hai JWT.
+   * Sau khi lưu token, gọi /account/me để lấy accountId và lưu vào localStorage.
+   */
+  persistUserSession: async (auth) => {
     if (!auth) return;
     clearAdminSession();
     localStorage.setItem("userAccessToken", auth.accessToken);
     localStorage.setItem("userRefreshToken", auth.refreshToken);
     localStorage.setItem("userUsername", auth.username || "");
     localStorage.setItem("userEmail", auth.email || "");
+
+    // Lấy accountId từ /account/me
+    const me = await fetchMe(auth.accessToken);
+    if (me?.id) {
+      localStorage.setItem("userAccountId", String(me.id));
+    }
   },
 
   clearUserSession,

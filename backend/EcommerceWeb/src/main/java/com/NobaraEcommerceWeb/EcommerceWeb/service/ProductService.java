@@ -69,7 +69,7 @@ public class ProductService {
                     .map(categoryId -> categoryDao.findById(categoryId)
                             .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + categoryId)))
                     .collect(Collectors.toList());
-            product.setCategory(categories);
+            product.setCategoryList(categories);
         }
 
         Product saved = productDao.save(product);
@@ -97,20 +97,32 @@ public class ProductService {
             existing.setDiscount(null);
         }
 
+        // Xoa lien ket cu trong bang join truoc khi set moi
+        // tranh duplicate va dam bao dong bo voi database
+        existing.getCategoryList().clear();
+        productDao.save(existing);
+
         if (dto.getCategoryIds() != null && !dto.getCategoryIds().isEmpty()) {
             List<Category> categories = dto.getCategoryIds().stream()
                     .map(categoryId -> categoryDao.findById(categoryId)
                             .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + categoryId)))
                     .collect(Collectors.toList());
-            existing.setCategory(categories);
+            existing.setCategoryList(categories);
         }
 
         return modelMapper.map(productDao.save(existing), ProductResponseDto.class);
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
         Product existing = productDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+
+        // Xoa lien ket trong bang join ManyToMany truoc khi xoa product
+        // tranh loi foreign key constraint
+        existing.getCategoryList().clear();
+        productDao.save(existing);
+
         productDao.delete(existing);
     }
 }

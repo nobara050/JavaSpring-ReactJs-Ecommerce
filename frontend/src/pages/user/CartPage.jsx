@@ -1,35 +1,82 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CartItem from "../../components/user/CartItem";
 import formatCurrency from "../../utils/formatCurrency";
+import cartService from "../../services/cartService";
 
-const initialCart = [
-  {
-    id: 1,
-    name: "Classic Leather Sneaker — White/Tan Limited Edition 2026 Special Collection",
-    price: 890000,
-    originalPrice: 1200000,
-    qty: 1,
-  },
-];
+const SHIPPING = 150000;
 
 const CartPage = () => {
-  const [cart, setCart] = useState(initialCart);
+  const navigate = useNavigate();
+  const [cart, setCart] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const updateQty = (id, delta) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, qty: Math.max(1, item.qty + delta) } : item
-      )
-    );
+  const accountId = localStorage.getItem("userAccountId");
+  const isLoggedIn = !!localStorage.getItem("userAccessToken");
+
+  useEffect(() => {
+    if (!isLoggedIn || !accountId) {
+      navigate("/login");
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const data = await cartService.getCartByAccountId(accountId);
+        if (!cancelled) setCart(data);
+      } catch {
+        if (!cancelled) setError("Không thể tải giỏ hàng.");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [accountId, isLoggedIn, navigate]);
+
+  const handleUpdateQty = async (cartItemId, delta) => {
+    const item = cart.cartItemList.find((i) => i.id === cartItemId);
+    if (!item) return;
+    const newQty = Math.max(1, item.quantity + delta);
+    try {
+      await cartService.updateItemQuantity(cart.id, cartItemId, newQty);
+      setCart((prev) => ({
+        ...prev,
+        cartItemList: prev.cartItemList.map((i) =>
+          i.id === cartItemId ? { ...i, quantity: newQty } : i
+        ),
+      }));
+    } catch {
+      alert("Cập nhật số lượng thất bại.");
+    }
   };
 
-  const removeItem = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  const handleRemove = async (cartItemId) => {
+    try {
+      await cartService.removeItem(cart.id, cartItemId);
+      setCart((prev) => ({
+        ...prev,
+        cartItemList: prev.cartItemList.filter((i) => i.id !== cartItemId),
+      }));
+    } catch {
+      alert("Xóa sản phẩm thất bại.");
+    }
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const shipping = 150000;
-  const total = subtotal + shipping;
+  if (loading) {
+    return <div className="max-w-6xl mx-auto px-4 py-16 text-center text-gray-500">Đang tải giỏ hàng...</div>;
+  }
+
+  if (error) {
+    return <div className="max-w-6xl mx-auto px-4 py-16 text-center text-red-500">{error}</div>;
+  }
+
+  const items = cart?.cartItemList || [];
+  const subtotal = items.reduce((sum, item) => sum + Number(item.priceAtAdd) * item.quantity, 0);
+  const total = subtotal + SHIPPING;
 
   return (
     <div className="min-w-6xl mx-auto px-4 py-10">
@@ -39,17 +86,23 @@ const CartPage = () => {
 
         {/* Danh sach san pham */}
         <div className="col-span-2 flex flex-col gap-4">
-          {cart.length === 0 ? (
+          {items.length === 0 ? (
             <div className="bg-white border border-gray-200 rounded-xl px-6 py-12 text-center text-gray-400 text-sm">
               Giỏ hàng trống
             </div>
           ) : (
-            cart.map((item) => (
+            items.map((item) => (
               <CartItem
                 key={item.id}
-                item={item}
-                onUpdateQty={updateQty}
-                onRemove={removeItem}
+                item={{
+                  id: item.id,
+                  name: item.productName,
+                  price: Number(item.priceAtAdd),
+                  qty: item.quantity,
+                  imageUrl: item.primaryImageUrl || null,
+                }}
+                onUpdateQty={(id, delta) => handleUpdateQty(id, delta)}
+                onRemove={(id) => handleRemove(id)}
               />
             ))
           )}
@@ -68,7 +121,7 @@ const CartPage = () => {
             </div>
             <div className="flex justify-between text-gray-500">
               <span>Phí vận chuyển</span>
-              <span>{formatCurrency(shipping)}</span>
+              <span>{formatCurrency(SHIPPING)}</span>
             </div>
           </div>
 
@@ -83,7 +136,10 @@ const CartPage = () => {
             Thanh toán
           </button>
 
-          <button className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+          <button
+            onClick={() => navigate("/")}
+            className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+          >
             Tiếp tục mua sắm
           </button>
         </div>
