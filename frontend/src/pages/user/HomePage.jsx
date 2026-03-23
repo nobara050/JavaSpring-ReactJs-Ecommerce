@@ -28,7 +28,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center max-w-6xl w-full">
+    <section className="flex flex-col items-center max-w-6xl w-full m-2">
       <Slider />
       {loading && <p className="text-sm text-gray-500 py-4">Đang tải sản phẩm...</p>}
       {error && <p className="text-sm text-red-500 py-2">{error}</p>}

@@ -20,6 +20,7 @@ const LoginPage = () => {
       if (!remember) {
         // vẫn lưu token; "nhớ đăng nhập" có thể mở rộng sau (cookie / refresh dài hạn)
       }
+      await authService.persistUserSession(data);
       navigate("/");
     } catch (err) {
       if (err.status === 401) {

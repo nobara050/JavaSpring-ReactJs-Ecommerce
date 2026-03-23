@@ -1,2 +1,4 @@
 Link test api: http://localhost:8080/swagger-ui/index.html
+BE: http://localhost:8080
+FE: http://localhost:5173/
 

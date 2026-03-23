@@ -1,17 +1,18 @@
 import apiClient from "./apiClient";
 
 const admin = { useAdminToken: true };
+const user = { useAdminToken: false };
 
 const orderService = {
   getAll: () => apiClient("/order", admin),
 
-  getById: (id) => apiClient(`/order/${id}`, admin),
+  getById: (id) => apiClient(`/order/${id}`, user),
 
-  getByAccountId: (accountId) => apiClient(`/order/account/${accountId}`, admin),
+  getByAccountId: (accountId) => apiClient(`/order/account/${accountId}`, user),
 
   create: (data) =>
     apiClient("/order", {
-      ...admin,
+      ...user,
       method: "POST",
       body: JSON.stringify(data),
     }),

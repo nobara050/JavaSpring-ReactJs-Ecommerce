@@ -79,7 +79,7 @@ const CartPage = () => {
   const total = subtotal + SHIPPING;
 
   return (
-    <div className="min-w-6xl mx-auto px-4 py-10">
+    <div className="min-w-6xl m-2 px-4 py-10">
       <h1 className="text-2xl font-medium text-gray-900 mb-8">Giỏ hàng</h1>
 
       <div className="grid grid-cols-3 gap-8 items-start">
@@ -132,7 +132,9 @@ const CartPage = () => {
             <span>{formatCurrency(total)}</span>
           </div>
 
-          <button className="w-full py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity">
+          <button 
+            onClick={() => navigate("/checkout")}
+            className="w-full py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity">
             Thanh toán
           </button>
 

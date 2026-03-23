@@ -10,10 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.NobaraEcommerceWeb.EcommerceWeb.dto.AccountRequestDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.dto.AccountResponseDto;
@@ -28,12 +31,36 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
-    // Endpoint cho user đang đăng nhập lấy thông tin của chính mình
-    // Đặt trước /{id} để tránh Spring hiểu "me" là một id
     @GetMapping("/me")
     public ResponseEntity<AccountResponseDto> getMe(@AuthenticationPrincipal UserDetails userDetails) {
         try {
             return new ResponseEntity<>(accountService.getAccountByUsername(userDetails.getUsername()), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<AccountResponseDto> updateMe(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody AccountRequestDto dto) {
+        try {
+            return new ResponseEntity<>(accountService.updateMe(userDetails.getUsername(), dto), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/me/avatar")
+    public ResponseEntity<AccountResponseDto> uploadAvatar(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            return new ResponseEntity<>(accountService.uploadAvatar(userDetails.getUsername(), file), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -62,7 +89,9 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AccountResponseDto> updateAccount(@PathVariable Long id, @RequestBody AccountRequestDto accountRequestDto) {
+    public ResponseEntity<AccountResponseDto> updateAccount(
+            @PathVariable Long id,
+            @RequestBody AccountRequestDto accountRequestDto) {
         try {
             return new ResponseEntity<>(accountService.updateAccount(id, accountRequestDto), HttpStatus.OK);
         } catch (EntityNotFoundException e) {

@@ -2,20 +2,22 @@ import { useState, useEffect } from "react";
 import formatCurrency from "../../utils/formatCurrency";
 import orderService from "../../services/orderService";
 
-const statusList = ["CHO_XAC_NHAN", "DANG_GIAO", "HOAN_THANH", "DA_HUY"];
+const statusList = ["CHO_XAC_NHAN", "DA_XAC_NHAN", "DANG_GIAO", "DA_GIAO", "DA_HUY"];
 
 const statusLabel = {
   CHO_XAC_NHAN: "Chờ xác nhận",
+  DA_XAC_NHAN: "Đã xác nhận",
   DANG_GIAO: "Đang giao",
-  HOAN_THANH: "Hoàn thành",
+  DA_GIAO: "Đã giao",
   DA_HUY: "Đã hủy",
 };
 
 const statusColor = {
   CHO_XAC_NHAN: "bg-yellow-100 text-yellow-700",
-  DANG_GIAO: "bg-blue-100 text-blue-700",
-  HOAN_THANH: "bg-green-100 text-green-700",
-  DA_HUY: "bg-red-100 text-red-700",
+  DA_XAC_NHAN: "bg-blue-100 text-blue-600",
+  DANG_GIAO: "bg-indigo-100 text-indigo-700",
+  DA_GIAO: "bg-green-100 text-green-700",
+  DA_HUY: "bg-red-100 text-red-600",
 };
 
 const ManageOrdersPage = () => {
@@ -104,7 +106,7 @@ const ManageOrdersPage = () => {
                   <td className="px-6 py-4 text-gray-900 font-medium">{order.accountId}</td>
                   <td className="px-6 py-4 text-gray-900">{formatCurrency(order.totalAmount)}</td>
                   <td className="px-6 py-4">
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColor[order.status]}`}>
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColor[order.status] || "bg-gray-100 text-gray-600"}`}>
                       {statusLabel[order.status] || order.status}
                     </span>
                   </td>
@@ -112,7 +114,10 @@ const ManageOrdersPage = () => {
                     {new Date(order.orderDate).toLocaleDateString("vi-VN")}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button onClick={() => openEdit(order)} className="text-sm text-blue-500 hover:text-blue-700 transition-colors">
+                    <button
+                      onClick={() => openEdit(order)}
+                      className="text-sm text-blue-500 hover:text-blue-700 transition-colors"
+                    >
                       Cập nhật
                     </button>
                   </td>
@@ -146,8 +151,18 @@ const ManageOrdersPage = () => {
               ))}
             </div>
             <div className="flex gap-3">
-              <button onClick={() => setEditTarget(null)} className="flex-1 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">Hủy</button>
-              <button onClick={handleSave} className="flex-1 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity">Lưu</button>
+              <button
+                onClick={() => setEditTarget(null)}
+                className="flex-1 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={handleSave}
+                className="flex-1 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity"
+              >
+                Lưu
+              </button>
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.AccountDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.AddressDao;
+import com.NobaraEcommerceWeb.EcommerceWeb.dao.CartDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.CouponDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.OrderDao;
 import com.NobaraEcommerceWeb.EcommerceWeb.dao.ProductDao;
@@ -18,6 +19,7 @@ import com.NobaraEcommerceWeb.EcommerceWeb.dto.OrderRequestDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.dto.OrderResponseDto;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Account;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Address;
+import com.NobaraEcommerceWeb.EcommerceWeb.model.Cart;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Coupon;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.Order;
 import com.NobaraEcommerceWeb.EcommerceWeb.model.OrderItem;
@@ -45,15 +47,18 @@ public class OrderService {
     ProductDao productDao;
 
     @Autowired
+    CartDao cartDao;
+
+    @Autowired
     ModelMapper modelMapper;
-    
+
     public List<OrderResponseDto> getAllOrders() {
         return orderDao.findAll()
                 .stream()
                 .map(this::mapToResponseDto)
                 .collect(Collectors.toList());
     }
-    
+
     public List<OrderResponseDto> getOrdersByAccountId(Long accountId) {
         return orderDao.findByAccountId(accountId)
                 .stream()
@@ -116,7 +121,18 @@ public class OrderService {
 
         order.setTotalAmount(total);
 
-        return mapToResponseDto(orderDao.save(order));
+        Order saved = orderDao.save(order);
+
+        // Xoa gio hang sau khi dat hang thanh cong
+        if (dto.getCartId() != null) {
+            Cart cart = cartDao.findById(dto.getCartId()).orElse(null);
+            if (cart != null) {
+                cart.getCartItemList().clear();
+                cartDao.save(cart);
+            }
+        }
+
+        return mapToResponseDto(saved);
     }
 
     public OrderResponseDto updateStatus(Long id, String status) {

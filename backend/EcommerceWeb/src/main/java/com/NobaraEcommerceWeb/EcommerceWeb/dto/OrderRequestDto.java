@@ -10,5 +10,6 @@ public class OrderRequestDto {
     private Long addressId;
     private Long couponId;
     private String paymentMethod;
+    private Long cartId;
     private List<OrderItemRequestDto> orderItems;
 }

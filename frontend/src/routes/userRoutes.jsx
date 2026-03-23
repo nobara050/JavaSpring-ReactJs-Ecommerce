@@ -6,6 +6,8 @@ import LoginPage from "../pages/auth/LoginPage.jsx";
 import RegisterPage from "../pages/auth/RegisterPage.jsx";
 import ProductDetailPage from "../pages/user/ProductDetailPage.jsx";
 import ProfilePage from "../pages/user/ProfilePage.jsx";
+import CheckoutPage from "../pages/user/CheckoutPage.jsx";
+import OrderConfirmationPage from "../pages/user/OrderConfirmationPage.jsx";
 
 const userRoutes = [
   {
@@ -16,6 +18,8 @@ const userRoutes = [
       { path: "cart", element: <CartPage /> },
       { path: "product/:id", element: <ProductDetailPage /> },
       { path: "profile", element: <ProfilePage /> },
+      { path: "checkout", element: <CheckoutPage /> },
+      { path: "order-confirmation/:orderId", element: <OrderConfirmationPage /> },
     ],
   },
   {

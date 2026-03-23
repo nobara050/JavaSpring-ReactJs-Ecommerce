@@ -37,6 +37,7 @@ const RegisterPage = () => {
         phone: form.phone.trim(),
       });
       authService.persistUserSession(data);
+      await authService.persistUserSession(data);
       navigate("/");
     } catch (err) {
       if (err.status === 409) {

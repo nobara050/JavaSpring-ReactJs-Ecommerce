@@ -1,6 +1,5 @@
 package com.NobaraEcommerceWeb.EcommerceWeb.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +24,13 @@ import com.NobaraEcommerceWeb.EcommerceWeb.filter.JwtAuthFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    JwtAuthFilter jwtAuthFilter;
-
     @Value("${app.allowed-origins}")
     private String allowedOrigins;
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter();
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -68,22 +69,41 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/discount/**").permitAll()
                 .requestMatchers("/discount/**").hasRole("ADMIN")
 
-                // Review - GET public, POST/PUT/DELETE cần đăng nhập
+                // Review
                 .requestMatchers(HttpMethod.GET, "/review/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/review/**").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/review/**").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/review/**").authenticated()
 
-                // Account - /me cho user đã đăng nhập, còn lại ADMIN
-                // Đặt trước /account/** để không bị override
+                // Account
                 .requestMatchers(HttpMethod.GET, "/account/me").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/account/me").authenticated()
+                .requestMatchers(HttpMethod.POST, "/account/me/avatar").authenticated()
+                .requestMatchers(HttpMethod.GET, "/account/*/addresses").authenticated()
+                .requestMatchers(HttpMethod.GET, "/account/addresses/*").authenticated()
+                .requestMatchers(HttpMethod.POST, "/account/*/addresses").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/account/addresses/*").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/account/addresses/*").authenticated()
                 .requestMatchers("/account/**").hasRole("ADMIN")
 
                 // Role
                 .requestMatchers("/role/**").hasRole("ADMIN")
 
-                // Cart - cần đăng nhập
+                // Cart
                 .requestMatchers("/cart/**").authenticated()
+
+                // Order
+                .requestMatchers(HttpMethod.POST, "/order").authenticated()
+                .requestMatchers(HttpMethod.GET, "/order/account/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/order/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/order/*/status").hasRole("ADMIN")
+
+                // Coupon
+                .requestMatchers(HttpMethod.GET, "/coupon/code/**").authenticated()
+                .requestMatchers("/coupon/**").hasRole("ADMIN")
+
+                // Payment
+                .requestMatchers("/payment/**").authenticated()
 
                 .anyRequest().authenticated()
             )
@@ -91,7 +111,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

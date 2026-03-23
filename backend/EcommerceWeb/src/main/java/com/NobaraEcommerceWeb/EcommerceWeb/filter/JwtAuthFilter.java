@@ -1,13 +1,15 @@
 package com.NobaraEcommerceWeb.EcommerceWeb.filter;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.NobaraEcommerceWeb.EcommerceWeb.service.JwtService;
@@ -18,7 +20,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -30,10 +31,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         System.out.println(">>> JwtAuthFilter running for: " + request.getRequestURI());
 
         final String authHeader = request.getHeader("Authorization");
+        
+        System.out.println(">>> Auth header: " + authHeader); // thêm dòng này
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -49,14 +52,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 if (jwtService.isTokenValid(token, userDetails)) {
+                    List<SimpleGrantedAuthority> authorities = jwtService.extractRoles(token)
+                            .stream()
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
+                            userDetails, null, authorities);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
         } catch (Exception e) {
-            // Token invalid - tiep tuc filter chain, Security se tu xu ly
+            System.out.println(">>> JwtAuthFilter error: " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);

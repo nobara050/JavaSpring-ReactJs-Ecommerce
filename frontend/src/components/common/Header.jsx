@@ -4,6 +4,7 @@ const Header = () => {
   useLocation();
   const isLoggedIn = !!localStorage.getItem("userAccessToken");
   const displayName = localStorage.getItem("userUsername") || localStorage.getItem("userEmail") || "Tài khoản";
+  const avatar = localStorage.getItem("userAvatar") || null;
 
   return (
     <header className="flex justify-center items-center h-16 max-h-16 bg-[#2a83e9] text-white shadow-xs">
@@ -35,7 +36,6 @@ const Header = () => {
                   clipRule="evenodd"
                 />
               </svg>
-
               <input
                 className="w-full bg-white placeholder:text-slate-400 !text-slate-700 text-sm border border-slate-200 rounded-4xl pl-10 pr-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                 placeholder="Bạn tìm gì..."
@@ -44,7 +44,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Category Icon*/}
+        {/* Category Icon */}
         <div className="flex justify-center items-center p-2 gap-1 hover:bg-[#f2f4f7] hover:rounded-t-xl hover:text-black">
           <div className="flex justify-center items-center">
             <div className="space-y-1">
@@ -56,22 +56,30 @@ const Header = () => {
           <span className="whitespace-nowrap">Danh mục</span>
         </div>
 
-        {/* User: đăng nhập hoặc profile */}
+        {/* User */}
         <Link
           to={isLoggedIn ? "/profile" : "/login"}
-          className="flex justify-center items-center gap-1 hover:bg-[#2871d5] p-2 px-4 rounded-3xl max-w-[200px]"
+          className="flex justify-center items-center gap-2 hover:bg-[#2871d5] p-2 px-4 rounded-3xl max-w-[200px]"
         >
-          <img
-            className="user-icon shrink-0"
-            src="/assets/icons/user_header.svg"
-            alt="user-icon"
-          />
+          {isLoggedIn && avatar ? (
+            <img
+              src={avatar}
+              alt="avatar"
+              className="w-7 h-7 rounded-full object-cover shrink-0 border border-white/30"
+            />
+          ) : (
+            <img
+              className="user-icon shrink-0"
+              src="/assets/icons/user_header.svg"
+              alt="user-icon"
+            />
+          )}
           <span className="whitespace-nowrap truncate">
             {isLoggedIn ? displayName : "Đăng nhập"}
           </span>
         </Link>
 
-        {/* Cart Icon*/}
+        {/* Cart Icon */}
         <Link
           to={"/cart"}
           className="flex justify-center items-center gap-1 hover:bg-[#2871d5] p-2 px-4 rounded-3xl"
