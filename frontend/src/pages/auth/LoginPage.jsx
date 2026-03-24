@@ -36,13 +36,13 @@ const LoginPage = () => {
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-8 w-full max-w-md">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-medium text-gray-900">Đăng nhập</h1>
-        <p className="text-sm text-gray-400 mt-1">Chào mừng bạn quay trở lại</p>
+        <h1 className="focus:outline-none caret-transparent text-2xl font-medium text-gray-900">Đăng nhập</h1>
+        <p onClick={() => navigate("/")} className="focus:outline-none caret-transparent cursor-pointer text-sm text-gray-400 mt-1">Trang chủ</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Tên đăng nhập</label>
+          <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Tên đăng nhập</label>
           <input
             type="text"
             autoComplete="username"
@@ -81,7 +81,7 @@ const LoginPage = () => {
             id="remember"
             checked={remember}
             onChange={(e) => setRemember(e.target.checked)}
-            className="w-4 h-4 accent-gray-900 cursor-pointer"
+            className="w-4 h-4 accent-gray-900 cursor-pointer focus:outline-none caret-transparent"
           />
           <label htmlFor="remember" className="text-sm text-gray-500 cursor-pointer">
             Nhớ đăng nhập
@@ -99,9 +99,9 @@ const LoginPage = () => {
         </button>
       </form>
 
-      <p className="text-center text-sm text-gray-400 mt-6">
+      <p className="focus:outline-none caret-transparent text-center text-sm text-gray-400 mt-6">
         Chưa có tài khoản?{" "}
-        <Link to="/register" className="text-gray-900 font-medium hover:underline">
+        <Link to="/register" className="focus:outline-none caret-transparent text-gray-900 font-medium hover:underline">
           Đăng ký ngay
         </Link>
       </p>

@@ -44,17 +44,18 @@ const AdminLoginPage = () => {
     >
       <div className="bg-white border border-gray-200 rounded-2xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-medium text-gray-900">Đăng nhập Admin</h1>
-          <p className="text-sm text-gray-500 mt-1">Dành cho quản trị hệ thống</p>
+          <h1 className="text-2xl font-medium text-gray-900 focus:outline-none caret-transparent">Đăng nhập Admin</h1>
+          <p className="text-sm text-gray-500 mt-1 focus:outline-none caret-transparent">Dành cho quản trị viên</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-gray-700">Username</label>
+            <label className="text-sm font-medium text-gray-700 focus:outline-none caret-transparent">Username</label>
             <input
               type="text"
               name="username"
-              placeholder="admin"
+              placeholder="Nhập tài khoản"
+              autoComplete="off"
               value={form.username}
               onChange={handleChange}
               required
@@ -63,11 +64,12 @@ const AdminLoginPage = () => {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
+            <label className="text-sm font-medium text-gray-700 focus:outline-none caret-transparent">Mật khẩu</label>
             <input
               type="password"
               name="password"
               placeholder="Nhập mật khẩu"
+              autoComplete="off"
               value={form.password}
               onChange={handleChange}
               required

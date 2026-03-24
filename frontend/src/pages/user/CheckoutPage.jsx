@@ -142,8 +142,8 @@ const CheckoutPage = () => {
   const total = subtotal + SHIPPING;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-2xl font-medium text-gray-900 mb-8">Thanh toán</h1>
+    <div className="min-w-5xl mx-auto px-4 py-10">
+      <h1 className="focus:outline-none caret-transparent text-2xl font-medium text-gray-900 mb-8">Thanh toán</h1>
 
       {error && (
         <div className="mb-6 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
@@ -157,8 +157,8 @@ const CheckoutPage = () => {
         <div className="col-span-2 flex flex-col gap-6">
 
           {/* Dia chi giao hang */}
-          <div className="bg-white border border-gray-200 rounded-xl p-5">
-            <h2 className="text-base font-medium text-gray-900 mb-4">Địa chỉ giao hàng</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 shadow">
+            <h2 className="text-base font-medium text-gray-900 mb-4 focus:outline-none caret-transparent">Địa chỉ giao hàng</h2>
 
             {addresses.length > 0 && !showNewAddress && (
               <div className="flex flex-col gap-3 mb-4">
@@ -177,13 +177,13 @@ const CheckoutPage = () => {
                       value={addr.id}
                       checked={selectedAddressId === addr.id}
                       onChange={() => setSelectedAddressId(addr.id)}
-                      className="mt-0.5 accent-gray-900"
+                      className="mt-0.5 accent-gray-900 focus:outline-none caret-transparent"
                     />
                     <div className="text-sm text-gray-700">
                       <p>{addr.street}</p>
                       <p className="text-gray-500">{addr.city}{addr.state ? `, ${addr.state}` : ""}, {addr.country}</p>
                       {addr.isDefault && (
-                        <span className="text-xs text-green-600 font-medium">Mặc định</span>
+                        <span className="focus:outline-none caret-transparent text-xs text-green-600 font-medium">Mặc định</span>
                       )}
                     </div>
                   </label>
@@ -194,14 +194,14 @@ const CheckoutPage = () => {
             {!showNewAddress ? (
               <button
                 onClick={() => setShowNewAddress(true)}
-                className="text-sm text-blue-500 hover:text-blue-700 transition-colors"
+                className="focus:outline-none caret-transparent text-sm text-blue-500 hover:text-blue-700 transition-colors"
               >
                 + Thêm địa chỉ mới
               </button>
             ) : (
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-gray-700">Địa chỉ</label>
+                  <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Địa chỉ</label>
                   <input
                     type="text"
                     name="street"
@@ -213,7 +213,7 @@ const CheckoutPage = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-gray-700">Thành phố</label>
+                    <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Thành phố</label>
                     <input
                       type="text"
                       name="city"
@@ -224,7 +224,7 @@ const CheckoutPage = () => {
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-gray-700">Tỉnh / Quận</label>
+                    <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Tỉnh / Quận</label>
                     <input
                       type="text"
                       name="state"
@@ -239,7 +239,7 @@ const CheckoutPage = () => {
                   {addresses.length > 0 && (
                     <button
                       onClick={() => setShowNewAddress(false)}
-                      className="text-sm text-gray-500 hover:text-gray-700"
+                      className="focus:outline-none caret-transparent text-sm text-gray-500 hover:text-gray-700"
                     >
                       Hủy
                     </button>
@@ -250,8 +250,8 @@ const CheckoutPage = () => {
           </div>
 
           {/* Phuong thuc thanh toan */}
-          <div className="bg-white border border-gray-200 rounded-xl p-5">
-            <h2 className="text-base font-medium text-gray-900 mb-4">Phương thức thanh toán</h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-5 shadow">
+            <h2 className="focus:outline-none caret-transparent text-base font-medium text-gray-900 mb-4">Phương thức thanh toán</h2>
             <div className="flex flex-col gap-3">
               <label className={`flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer transition-colors ${
                 paymentMethod === "COD" ? "border-gray-900 bg-gray-50" : "border-gray-200 hover:border-gray-400"
@@ -262,11 +262,11 @@ const CheckoutPage = () => {
                   value="COD"
                   checked={paymentMethod === "COD"}
                   onChange={() => setPaymentMethod("COD")}
-                  className="accent-gray-900"
+                  className="accent-gray-900 focus:outline-none caret-transparent"
                 />
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Thanh toán khi nhận hàng (COD)</p>
-                  <p className="text-xs text-gray-500">Thanh toán bằng tiền mặt khi nhận hàng</p>
+                  <p className="focus:outline-none caret-transparent text-sm font-medium text-gray-900">Thanh toán khi nhận hàng (COD)</p>
+                  <p className="focus:outline-none caret-transparent text-xs text-gray-500">Thanh toán bằng tiền mặt khi nhận hàng</p>
                 </div>
               </label>
 
@@ -279,18 +279,18 @@ const CheckoutPage = () => {
                   value="VNPAY"
                   checked={paymentMethod === "VNPAY"}
                   onChange={() => setPaymentMethod("VNPAY")}
-                  className="accent-gray-900"
+                  className="accent-gray-900 focus:outline-none caret-transparent"
                 />
-                <div>
-                  <p className="text-sm font-medium text-gray-900">VNPay</p>
-                  <p className="text-xs text-gray-500">Thanh toán qua cổng VNPay</p>
+                <div className="focus:outline-none caret-transparent">
+                  <p className="focus:outline-none caret-transparent text-sm font-medium text-gray-900">VNPay</p>
+                  <p className="focus:outline-none caret-transparent text-xs text-gray-500">Thanh toán qua cổng VNPay</p>
                 </div>
               </label>
             </div>
           </div>
 
           {/* Danh sach san pham */}
-          <div className="bg-white border border-gray-200 rounded-xl p-5">
+          <div className="bg-white border border-gray-200 rounded-xl p-5 shadow">
             <h2 className="text-base font-medium text-gray-900 mb-4">Sản phẩm ({items.length})</h2>
             <div className="flex flex-col gap-3">
               {items.map((item) => (
@@ -318,17 +318,17 @@ const CheckoutPage = () => {
         </div>
 
         {/* Cot phai - tom tat */}
-        <div className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col gap-4">
+        <div className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col gap-4 shadow">
           <h2 className="text-base font-medium text-gray-900">Tóm tắt đơn hàng</h2>
 
           <hr className="border-gray-200" />
 
           <div className="flex flex-col gap-3 text-sm">
-            <div className="flex justify-between text-gray-500">
+            <div className="focus:outline-none caret-transparent flex justify-between text-gray-500">
               <span>Tạm tính</span>
               <span>{formatCurrency(subtotal)}</span>
             </div>
-            <div className="flex justify-between text-gray-500">
+            <div className="focus:outline-none caret-transparent flex justify-between text-gray-500">
               <span>Phí vận chuyển</span>
               <span>{formatCurrency(SHIPPING)}</span>
             </div>
@@ -336,25 +336,25 @@ const CheckoutPage = () => {
 
           <hr className="border-gray-200" />
 
-          <div className="flex justify-between text-sm font-medium text-gray-900">
+          <div className="focus:outline-none caret-transparent flex justify-between text-sm font-medium text-gray-900">
             <span>Tổng cộng</span>
             <span>{formatCurrency(total)}</span>
           </div>
 
-          <button
+          <a
             onClick={handleSubmit}
             disabled={submitting}
-            className="w-full py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            className="focus:outline-none caret-transparent w-full py-3 bg-[#fc7600] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer flex flex-col items-center justify-center shadow-sm"
           >
             {submitting ? "Đang xử lý..." : "Đặt hàng"}
-          </button>
+          </a>
 
-          <button
+          <a
             onClick={() => navigate("/cart")}
-            className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+            className="focus:outline-none caret-transparent w-full py-3 !text-[#1e78e7] rounded-lg text-sm font-medium bg-[#f1f8fe] cursor-pointer flex flex-col items-center justify-center shadow-sm"
           >
             Quay lại giỏ hàng
-          </button>
+          </a>
         </div>
       </div>
     </div>

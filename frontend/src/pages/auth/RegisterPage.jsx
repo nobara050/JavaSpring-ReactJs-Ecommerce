@@ -53,17 +53,17 @@ const RegisterPage = () => {
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-8 w-full max-w-md">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-medium text-gray-900">Đăng ký</h1>
-        <p className="text-sm text-gray-400 mt-1">Tạo tài khoản mới</p>
+        <h1 className="text-2xl font-medium text-gray-900 focus:outline-none caret-transparent">Đăng ký</h1>
+        <p onClick={() => navigate("/")} className="focus:outline-none caret-transparent cursor-pointer text-sm text-gray-400 mt-1">Trang chủ</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Họ tên</label>
+          <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Họ tên</label>
           <input
             type="text"
             name="fullName"
-            placeholder="Nguyễn Văn A"
+            placeholder="Tên đầy đủ"
             value={form.fullName}
             onChange={handleChange}
             required
@@ -72,7 +72,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Email (dùng làm tên đăng nhập)</label>
+          <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Email (dùng làm tên đăng nhập)</label>
           <input
             type="email"
             name="email"
@@ -85,7 +85,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Số điện thoại</label>
+          <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Số điện thoại</label>
           <input
             type="tel"
             name="phone"
@@ -98,7 +98,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
+          <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Mật khẩu</label>
           <input
             type="password"
             name="password"
@@ -111,7 +111,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-700">Xác nhận mật khẩu</label>
+          <label className="focus:outline-none caret-transparent text-sm font-medium text-gray-700">Xác nhận mật khẩu</label>
           <input
             type="password"
             name="confirmPassword"
@@ -134,9 +134,9 @@ const RegisterPage = () => {
         </button>
       </form>
 
-      <p className="text-center text-sm text-gray-400 mt-6">
+      <p className="focus:outline-none caret-transparent text-center text-sm text-gray-400 mt-6">
         Đã có tài khoản?{" "}
-        <Link to="/login" className="text-gray-900 font-medium hover:underline">
+        <Link to="/login" className="focus:outline-none caret-transparent text-gray-900 font-medium hover:underline">
           Đăng nhập
         </Link>
       </p>

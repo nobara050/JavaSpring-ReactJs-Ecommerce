@@ -45,7 +45,7 @@ const Header = () => {
         </div>
 
         {/* Category Icon */}
-        <div className="flex justify-center items-center p-2 gap-1 hover:bg-[#f2f4f7] hover:rounded-t-xl hover:text-black">
+        <div className="focus:outline-none caret-transparent flex justify-center items-center p-2 gap-1 hover:bg-[#f2f4f7] hover:rounded-t-xl hover:text-black">
           <div className="flex justify-center items-center">
             <div className="space-y-1">
               <div className="w-4 h-0.5 bg-current"></div>
@@ -59,7 +59,7 @@ const Header = () => {
         {/* User */}
         <Link
           to={isLoggedIn ? "/profile" : "/login"}
-          className="flex justify-center items-center gap-2 hover:bg-[#2871d5] p-2 px-4 rounded-3xl max-w-[200px]"
+          className="focus:outline-none caret-transparent flex justify-center items-center gap-2 hover:bg-[#2871d5] p-2 px-4 rounded-3xl min-w-[150px]"
         >
           {isLoggedIn && avatar ? (
             <img
@@ -82,7 +82,7 @@ const Header = () => {
         {/* Cart Icon */}
         <Link
           to={"/cart"}
-          className="flex justify-center items-center gap-1 hover:bg-[#2871d5] p-2 px-4 rounded-3xl"
+          className="focus:outline-none caret-transparent flex justify-center items-center gap-1 hover:bg-[#2871d5] p-2 px-4 rounded-3xl"
         >
           <img
             className="user-icon"

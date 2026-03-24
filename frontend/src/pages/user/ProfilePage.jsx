@@ -94,23 +94,23 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-10">
-      <h1 className="text-2xl font-medium text-gray-900 mb-8">Thông tin cá nhân</h1>
+    <div className="flex flex-col items-center justify-center mt-10 mb-5 min-w-xl">
+      <h1 className="w-full flex flex-col items-center justify-center text-2xl font-bold text-gray-900 mb-8 focus:outline-none caret-transparent">Thông Tin Cá Nhân</h1>
 
       {error && (
-        <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+        <div className="flex flex-col items-center justify-center w-full mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
           {error}
         </div>
       )}
 
       {successMsg && (
-        <div className="mb-4 px-4 py-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-600">
+        <div className="flex flex-col items-center justify-center w-full mb-4 px-4 py-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-600">
           {successMsg}
         </div>
       )}
 
       {/* Avatar */}
-      <div className="bg-white border border-gray-200 rounded-xl p-5 mb-4 flex items-center gap-5">
+      <div className="w-full bg-white border border-gray-200 rounded-xl p-5 mb-4 flex items-center gap-5 justify-center">
         <div className="relative">
           <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center">
             {avatarPreview ? (
@@ -127,8 +127,8 @@ const ProfilePage = () => {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-gray-900 mb-1">Ảnh đại diện</p>
-          <label className="cursor-pointer text-sm text-blue-500 hover:text-blue-700 transition-colors">
+          <p className="text-sm font-semibold text-gray-900 mb-1 focus:outline-none caret-transparent">Ảnh đại diện</p>
+          <label className="cursor-pointer font-semibold text-sm text-blue-500 hover:text-blue-700 transition-colors focus:outline-none caret-transparent">
             Thay đổi ảnh
             <input
               type="file"
@@ -142,49 +142,49 @@ const ProfilePage = () => {
       </div>
 
       {/* Form thong tin */}
-      <div className="bg-white border border-gray-200 rounded-xl p-5 mb-4">
-        <h2 className="text-base font-medium text-gray-900 mb-4">Chỉnh sửa thông tin</h2>
+      <div className="w-full bg-white border border-gray-200 rounded-xl p-10 mb-4">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4 focus:outline-none caret-transparent flex flex-col items-center justify-center">Chỉnh sửa thông tin</h2>
         <form onSubmit={handleSave} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-gray-700">Họ tên</label>
+            <label className="text-sm font-medium text-gray-700 focus:outline-none caret-transparent">Họ tên</label>
             <input
               type="text"
               name="fullName"
               value={form.fullName}
               onChange={handleFormChange}
               placeholder="Nhập họ tên"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              className="focus:outline-none w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-gray-700">Email</label>
+            <label className="text-sm font-medium text-gray-700 focus:outline-none caret-transparent">Email</label>
             <input
               type="email"
               name="email"
               value={form.email}
               onChange={handleFormChange}
               placeholder="Nhập email"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              className="focus:outline-none w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-gray-700">Số điện thoại</label>
+          <div className="flex flex-col gap-1.5 mb-4">
+            <label className="text-sm font-medium text-gray-700 focus:outline-none caret-transparent">Số điện thoại</label>
             <input
               type="tel"
               name="phone"
               value={form.phone}
               onChange={handleFormChange}
               placeholder="Nhập số điện thoại"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              className="focus:outline-none w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
             />
           </div>
 
           <button
             type="submit"
             disabled={saving}
-            className="w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex flex-col items-center justify-center w-full py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? "Đang lưu..." : "Lưu thay đổi"}
           </button>
@@ -192,8 +192,8 @@ const ProfilePage = () => {
       </div>
 
       {/* Thong tin tai khoan */}
-      <div className="bg-white border border-gray-200 rounded-xl p-5 mb-4">
-        <h2 className="text-base font-medium text-gray-900 mb-4">Thông tin tài khoản</h2>
+      <div className="w-full bg-white border border-gray-200 rounded-xl p-10 mb-4">
+        <h2 className="flex flex-col items-center justify-center text-base font-semibold text-lg text-gray-900 mb-4">Thông tin tài khoản</h2>
         <dl className="flex flex-col gap-3 text-sm">
           <div className="flex justify-between">
             <dt className="text-gray-500">Tên đăng nhập</dt>
@@ -205,13 +205,12 @@ const ProfilePage = () => {
           </div>
         </dl>
       </div>
-
-      <button
+          
+      <a
         onClick={handleLogout}
-        className="w-full py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
-      >
+        className="cursor-pointer flex flex-col items-center justify-center w-full py-2.5 border border-gray-300 text-white rounded-lg text-sm font-medium bg-[#fc7600] mb-5">
         Đăng xuất
-      </button>
+      </a>
     </div>
   );
 };

@@ -231,11 +231,11 @@ const ProductDetailPage = () => {
       />
 
       {/* Thong tin san pham */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white rounded-xl border border-gray-200 p-6 md:p-10 min-w-5xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white rounded-xl border border-gray-200 p-6 md:p-10 min-w-4xl focus:outline-none caret-transparent">
 
         {/* Gallery anh */}
-        <div className="flex flex-col gap-3">
-          <div className="bg-gray-100 rounded-2xl aspect-square flex items-center justify-center border border-gray-200 overflow-hidden">
+        <div className="flex flex-col gap-3 p-2">
+          <div className="bg-gray-100 rounded-2xl aspect-square flex items-center justify-center overflow-hidden focus:outline-none caret-transparent">
             {selectedImage ? (
               <img
                 src={resolveAssetUrl(selectedImage.imageUrl)}
@@ -273,15 +273,19 @@ const ProductDetailPage = () => {
         </div>
 
         {/* Thong tin ben phai */}
-        <div>
+        <div className="px-10 flex flex-col justify-center">
           {inStock ? (
-            <span className="inline-block text-xs font-medium bg-green-100 text-green-700 px-3 py-1 rounded-full mb-3">
-              Còn hàng
-            </span>
+            <div>
+              <span className="inline-block text-xs font-medium bg-green-100 text-green-700 px-3 py-1 rounded-full mb-3">
+                Còn hàng
+              </span>
+            </div>
           ) : (
-            <span className="inline-block text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1 rounded-full mb-3">
-              Hết hàng
-            </span>
+            <div>
+              <span className="inline-block text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1 rounded-full mb-3">
+                Hết hàng
+              </span>
+            </div>
           )}
 
           <h1 className="text-2xl font-medium text-gray-900 mb-2">{product.productName}</h1>
@@ -354,7 +358,7 @@ const ProductDetailPage = () => {
       </div>
 
       {/* Mo ta san pham */}
-      <div className="mt-5 border border-gray-200 rounded-xl bg-white p-6 md:p-10">
+      <div className="mt-5 border border-gray-200 rounded-xl bg-white p-6 md:p-10 focus:outline-none caret-transparent">
         <h2 className="text-base font-medium text-gray-900 mb-3">Mô tả sản phẩm</h2>
         <p className="text-sm text-gray-500 leading-relaxed whitespace-pre-wrap">
           {product.description || "Chưa có mô tả."}
@@ -363,12 +367,12 @@ const ProductDetailPage = () => {
 
       {/* Danh gia san pham */}
       <div className="mt-5 border border-gray-200 rounded-xl bg-white p-6 md:p-10">
-        <h2 className="text-base font-medium text-gray-900 mb-5">Đánh giá sản phẩm</h2>
+        <h2 className="text-base font-medium text-gray-900 mb-5 focus:outline-none caret-transparent">Đánh giá sản phẩm</h2>
 
         {/* Form viet danh gia */}
         {isLoggedIn ? (
           <div className="mb-6 pb-6 border-b border-gray-200">
-            <p className="text-sm font-medium text-gray-700 mb-2">Viết đánh giá của bạn</p>
+            <p className="focus:outline-none caret-transparent text-sm font-medium text-gray-700 mb-2 focus:outline-none caret-transparent">Viết đánh giá của bạn</p>
             <StarRating value={reviewRating} onChange={setReviewRating} />
             <textarea
               value={reviewComment}
@@ -382,20 +386,20 @@ const ProductDetailPage = () => {
               type="button"
               disabled={reviewLoading}
               onClick={handleSubmitReview}
-              className="mt-2 px-5 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-50"
+              className="focus:outline-none caret-transparent mt-2 px-5 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-50"
             >
               {reviewLoading ? "Đang gửi..." : "Gửi đánh giá"}
             </button>
           </div>
         ) : (
-          <div className="mb-6 pb-6 border-b border-gray-200 text-sm text-gray-500">
+          <div className="mb-6 pb-6 border-b border-gray-200 text-sm text-gray-500 focus:outline-none caret-transparent">
             <Link to="/login" className="text-gray-900 underline font-medium">Đăng nhập</Link> để viết đánh giá.
           </div>
         )}
 
         {/* Danh sach danh gia */}
         {reviews.length === 0 ? (
-          <p className="text-sm text-gray-400">Chưa có đánh giá nào.</p>
+          <p className="text-sm text-gray-400 focus:outline-none caret-transparent">Chưa có đánh giá nào.</p>
         ) : (
           <div className="flex flex-col gap-5">
             {reviews.map((review) => (
