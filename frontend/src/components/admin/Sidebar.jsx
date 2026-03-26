@@ -13,12 +13,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   return (
-    <div className="w-56 min-h-screen bg-gray-900 flex flex-col">
-      {/* Logo */}
-      <div className="px-6 py-5 border-b border-gray-700">
-        <h1 className="text-white font-medium text-base">Admin Panel</h1>
-      </div>
-
+    <div className="focus:outline-none caret-transparent w-56 min-h-screen bg-gray-900 flex flex-col">
       {/* Menu */}
       <nav className="flex flex-col gap-1 px-3 py-4">
         {menuItems.map((item) => (

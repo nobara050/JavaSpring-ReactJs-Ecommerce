@@ -90,11 +90,11 @@ const ManageCategoriesPage = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8 focus:outline-none caret-transparent">
         <h1 className="text-2xl font-medium text-gray-900">Quản lý danh mục</h1>
         <button
           onClick={openAdd}
-          className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:opacity-80 transition-opacity"
+          className="focus:outline-none caret-transparent px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:opacity-80 transition-opacity"
         >
           Thêm danh mục
         </button>
@@ -102,7 +102,7 @@ const ManageCategoriesPage = () => {
 
       {/* Thong bao loi */}
       {error && (
-        <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+        <div className="focus:outline-none caret-transparent mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
           {error}
           <button onClick={() => setError("")} className="ml-2 text-red-400 hover:text-red-600">✕</button>
         </div>
@@ -118,7 +118,7 @@ const ManageCategoriesPage = () => {
         />
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="focus:outline-none caret-transparent bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">

@@ -66,7 +66,7 @@ const ManageOrdersPage = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-medium text-gray-900 mb-8">Quản lý đơn hàng</h1>
+      <h1 className="focus:outline-none caret-transparent text-2xl font-medium text-gray-900 mb-8">Quản lý đơn hàng</h1>
 
       <div className="mb-5">
         <input
@@ -78,7 +78,7 @@ const ManageOrdersPage = () => {
         />
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="focus:outline-none caret-transparent bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">

@@ -59,7 +59,7 @@ const Header = () => {
         {/* User */}
         <Link
           to={isLoggedIn ? "/profile" : "/login"}
-          className="focus:outline-none caret-transparent flex justify-center items-center gap-2 hover:bg-[#2871d5] p-2 px-4 rounded-3xl min-w-[150px]"
+          className="focus:outline-none caret-transparent flex justify-center items-center gap-2 hover:bg-[#2871d5] p-2 px-4 rounded-3xl min-w-[135px]"
         >
           {isLoggedIn && avatar ? (
             <img
@@ -82,7 +82,7 @@ const Header = () => {
         {/* Cart Icon */}
         <Link
           to={"/cart"}
-          className="focus:outline-none caret-transparent flex justify-center items-center gap-1 hover:bg-[#2871d5] p-2 px-4 rounded-3xl"
+          className="focus:outline-none caret-transparent flex justify-center items-center gap-1 hover:bg-[#2871d5] p-2 px-4 rounded-3xl min-w-[120px]"
         >
           <img
             className="user-icon"

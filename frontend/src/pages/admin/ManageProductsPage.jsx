@@ -246,7 +246,7 @@ const ManageProductsPage = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="focus:outline-none caret-transparent flex items-center justify-between mb-8">
         <h1 className="text-2xl font-medium text-gray-900">Quản lý sản phẩm</h1>
         <button
           onClick={openAdd}
@@ -266,7 +266,7 @@ const ManageProductsPage = () => {
         />
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="focus:outline-none caret-transparent bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">

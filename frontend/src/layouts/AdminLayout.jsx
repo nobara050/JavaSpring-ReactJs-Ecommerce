@@ -28,7 +28,7 @@ const AdminLayout = () => {
     <div className="flex min-h-screen min-w-6xl flex-col bg-gray-100">
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-6">
         <p className="text-sm text-gray-600">
-          Đăng nhập: <span className="font-medium text-gray-900">{adminName}</span>
+          Bạn đang đăng nhập tài khoản: <span className="font-medium text-gray-900">{adminName}</span>
         </p>
         <button
           type="button"
